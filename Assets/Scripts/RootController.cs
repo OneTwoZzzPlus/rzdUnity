@@ -1,38 +1,29 @@
 using Interfaces;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using UnityEngine;
 
-public class RootController : MonoBehaviour
+namespace DefaultNamespace
 {
-    public static RootController Instance;
-
-    [SerializeField] private FakeTargetTracker FakeTargetTracker;
-    [SerializeField] private RealTargetTracker realTargetTracker;
-
-    public ITargetTracker TargetTracker
+    public class RootController : MonoBehaviour
     {
-        get
-        {
+        public static RootController Instance;
+        [SerializeField] private FakeTargetTracker fakeTargetTracker;
+        [SerializeField] private RealTargetTracker realTargetTracker;
+
 #if UNITY_EDITOR
-            return FakeTargetTracker as ITargetTracker;
+        public ITargetTracker TargetTracker => fakeTargetTracker;
 #else
-            return releaseTargetTracker;
+        public ITargetTracker TargetTracker => realTargetTracker;
 #endif
-        }
-    }
 
-    private void Awake()
-    {
-       var rootControllers = GetComponentsInChildren<RootController>();
-        if (rootControllers.Length > 1 && rootControllers[0] != this)
+
+        private void Awake()
         {
-            Destroy(gameObject);
+            var rootControllers = FindObjectsOfType<RootController>();
+            if (rootControllers.Length > 1 && rootControllers[0] != this)
+                Destroy(gameObject);
+            Instance = this;
         }
-
-        Instance = this;
-
-
     }
 }

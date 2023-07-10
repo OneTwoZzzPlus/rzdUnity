@@ -1,42 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Interfaces;
 using System;
+using System.Reflection;
+using Interfaces;
+using Main;
+using UnityEngine;
 
-public class RealTargetTracker : MonoBehaviour, ITargetTracker
+namespace DefaultNamespace
 {
-    public event Action<object> TargetDetected;
-    public event Action<object, Matrix4x4> TargetComputed;
-    public event Action<object> TargetLost;
-
-    // Start is called before the first frame update
-    void Start()
+    public class RealTargetTracker : MonoBehaviour, ITargetTracker
     {
-        WebGLBridge.OnExternalDetect += ExternalDetectedHandler;
-        WebGLBridge.OnExternalLost += ExternalLostHandler;
-        WebGLBridge.OnExternalCompute += ExternalComputeHandler;
-    }
+        public event Action<int> TargetDetected;
+        public event Action<int, Matrix4x4> TargetComputed;
+        public event Action<int> TargetLost;
 
-        
-    public void EngineStart()
-    {
-        WebGLBridge.EngineStarted();
-    }
+        private void Start()
+        {
+            WebGLBridge.OnExternalDetect += OnExternalDetect;
+            WebGLBridge.OnExternalCompute += OnExternalCompute;
+            WebGLBridge.OnExternalLost += OnExternalLost;
+        }
 
-    private void ExternalDetectedHandler(int targetID)
-    {
-        TargetDetected?.Invoke(targetID);
-    }
+        public void EngineStart()
+        {
+            WebGLBridge.EngineStarted();
+            Debug.Log("ENGINE STARTED");
+        }
 
-    private void ExternalLostHandler(int targetID)
-    {
-        TargetLost?.Invoke(targetID);
-    }
+        private void OnExternalDetect(int index)
+        {
+            Debug.Log("Detected " + index);
+            TargetDetected?.Invoke(index);
 
-    private void ExternalComputeHandler(int targetID, Matrix4x4 matrix)
-    {
-        TargetComputed?.Invoke(targetID);
-        TargetComputed?.Invoke(matrix);
+        }
+
+        private void OnExternalCompute(int index, Matrix4x4 matrix)
+        {
+            TargetComputed?.Invoke(index, matrix);
+        }
+
+        private void OnExternalLost(int index)
+        {             
+            Debug.Log("Lost " + index);
+            TargetLost?.Invoke(index);
+        }
+
+
     }
 }

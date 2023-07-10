@@ -6,9 +6,9 @@ namespace Interfaces
 {
     public interface ITargetTracker
     {
-        public event Action<object> TargetDetected;
-        public event Action<object, Matrix4x4> TargetComputed;
-        public event Action<object> TargetLost;
+        public event Action<int> TargetDetected;
+        public event Action<int, Matrix4x4> TargetComputed;
+        public event Action<int> TargetLost;
 
         public void EngineStart();
     }
