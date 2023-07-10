@@ -1,4 +1,3 @@
-using Assets.Scripts;
 using Interfaces;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,14 +7,14 @@ namespace DefaultNamespace
 {
     public class RootController : MonoBehaviour
     {
-        public static RootController instance;
+        public static RootController Instance;
         [SerializeField] private FakeTargetTracker fakeTargetTracker;
         [SerializeField] private RealTargetTracker realTargetTracker;
 
 #if UNITY_EDITOR
-        public ITargetTracker targetTracker => fakeTargetTracker;
+        public ITargetTracker TargetTracker => fakeTargetTracker;
 #else
-        public ITargetTracker targetTracker => realTargetTracker;
+        public ITargetTracker TargetTracker => realTargetTracker;
 #endif
 
 
@@ -24,7 +23,7 @@ namespace DefaultNamespace
             var rootControllers = FindObjectsOfType<RootController>();
             if (rootControllers.Length > 1 && rootControllers[0] != this)
                 Destroy(gameObject);
-            instance = this;
+            Instance = this;
         }
     }
 }
