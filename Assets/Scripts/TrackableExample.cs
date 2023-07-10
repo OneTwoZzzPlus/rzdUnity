@@ -1,7 +1,7 @@
 ﻿using Main;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace SignsCV
 {
     public class TrackableExample : MonoBehaviour
     {
@@ -34,6 +34,7 @@ namespace DefaultNamespace
             Debug.Log("Detected " + index);
             if (arObjectPrefab)
                 arObject = Instantiate(arObjectPrefab, trackableAnchor);
+            
         }
 
         private void OnExternalCompute(int index, Matrix4x4 matrix)
