@@ -1,4 +1,5 @@
-﻿using Main;
+﻿using Interfaces;
+using Main;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -10,18 +11,22 @@ namespace DefaultNamespace
         [SerializeField] private Transform trackableAnchor;
 
         private GameObject arObject;
+        private ITargetTracker targetTracker;
 
         private void Start()
         {
+
+            targetTracker = RootController.Instance.TargetTracker;
+
             if (webCam)
             {
                 webCam.OnInitialized += OnWebcamInitialized;
                 webCam.Initiate();
             }
 
-            WebGLBridge.OnExternalDetect += OnExternalDetect;
-            WebGLBridge.OnExternalCompute += OnExternalCompute;
-            WebGLBridge.OnExternalLost += OnExternalLost;
+            targetTracker.TargetDetected += TargetDetectedHandler;
+            targetTracker.TargetComputed += TargetComputedHandler;
+            targetTracker.TargetLost += TargetLostHandler;
         }
 
         private void OnWebcamInitialized()
@@ -29,14 +34,14 @@ namespace DefaultNamespace
             WebGLBridge.EngineStarted();
         }
 
-        private void OnExternalDetect(int index)
+        private void TargetDetectedHandler(int index)
         {
             Debug.Log("Detected " + index);
             if (arObjectPrefab)
                 arObject = Instantiate(arObjectPrefab, trackableAnchor);
         }
 
-        private void OnExternalCompute(int index, Matrix4x4 matrix)
+        private void TargetComputedHandler(int index, Matrix4x4 matrix)
         {
             matrix = matrix.HouseholderReflection(Vector3.forward);
             matrix = matrix.MultiplyByNumber(.5f);
@@ -44,7 +49,7 @@ namespace DefaultNamespace
             trackableAnchor.SetTransformFromMatrixStab(matrix);
         }
 
-        private void OnExternalLost(int index)
+        private void TargetLostHandler(int index)
         {
             Debug.Log("Lost " + index);
             if (arObject)
@@ -53,9 +58,9 @@ namespace DefaultNamespace
 
         private void OnDestroy()
         {
-            WebGLBridge.OnExternalDetect -= OnExternalDetect;
-            WebGLBridge.OnExternalCompute -= OnExternalCompute;
-            WebGLBridge.OnExternalLost -= OnExternalLost;
+            WebGLBridge.OnExternalDetect -= TargetDetectedHandler;
+            WebGLBridge.OnExternalCompute -= TargetComputedHandler;
+            WebGLBridge.OnExternalLost -= TargetLostHandler;
         }
     }
 }
