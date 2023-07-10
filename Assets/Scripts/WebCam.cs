@@ -17,7 +17,8 @@ namespace DefaultNamespace
         private int requestedHeight = 640;
         [SerializeField] private int requestedFPS = 30;
         [SerializeField] private bool staticCameraIndex = false;
-        [SerializeField] private int requestedCameraIndex = -1;
+       
+        [SerializeField][Range(0, 6)] private int requestedCameraIndex = 0;
         private void Start()
         {
             requestedHeight = Screen.height;
