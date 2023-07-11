@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 25891275}
   m_Layer: 0
   m_Name: WebcamRenderCamera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -387,6 +387,11 @@ MonoBehaviour:
   button: {fileID: 681623395}
   text: {fileID: 506183758}
   delay: 2
+--- !u!1 &1141374731 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 326187536468938217, guid: a0a793872cba6e24aa4410b9e33f03e9, type: 3}
+  m_PrefabInstance: {fileID: 326187537395230732}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1172493583
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,6 +448,7 @@ GameObject:
   - component: {fileID: 1272478367}
   - component: {fileID: 1272478366}
   - component: {fileID: 1272478365}
+  - component: {fileID: 1272478369}
   m_Layer: 0
   m_Name: '[Root]'
   m_TagString: Untagged
@@ -488,6 +494,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fakeTargetTracker: {fileID: 1272478365}
   realTargetTracker: {fileID: 1272478366}
+  windowController: {fileID: 1272478369}
 --- !u!4 &1272478368
 Transform:
   m_ObjectHideFlags: 0
@@ -503,6 +510,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1272478369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272478364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16bfcbf36b46c44e9d8d2a01d495c7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  windowPrefabs:
+  - {fileID: 1141374731}
+  - {fileID: 1347345804}
+  - {fileID: 433663458}
+  canvas: {fileID: 1710174045}
 --- !u!1 &1347345804 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4550003391187876201, guid: 9dce563b2086248498083b1b6ac478e2, type: 3}

@@ -1,5 +1,6 @@
 using Interfaces;
 using UnityEngine;
+using View;
 
 namespace DefaultNamespace
 {
@@ -15,6 +16,8 @@ namespace DefaultNamespace
         public ITargetTracker TargetTracker => realTargetTracker;
 #endif
 
+        [SerializeField] private WindowController windowController;
+        public IWindowController WindowController => windowController;
 
         private void Awake()
         {
