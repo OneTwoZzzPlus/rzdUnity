@@ -46,13 +46,13 @@ namespace View
 
         public void HideWindow(Type windowType) // Скрыть
         {
-            var window = GetOrCreateWindow(windowType);
+            var window = GetWindow(windowType);
             window?.Hide();
         }
 
         public IWindow ShowWindow(Type type) // Показать
         {
-            var window = GetWindow(type);
+            var window = GetOrCreateWindow(type);
             if (window is null) return null;
             if (!window.IsShown) window.Show();
             return window;
