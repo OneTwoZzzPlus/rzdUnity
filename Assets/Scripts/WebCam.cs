@@ -105,7 +105,7 @@ namespace DefaultNamespace
                 yield break;
             if (devices.Length <= 0)
                 yield break;
-            var deviceIndex = devices.Length > 1 ? 1 : 0;
+            var deviceIndex = devices.Length > 1 ? 0 : 0;
             webCamTexture = new WebCamTexture(devices[deviceIndex].name,  requestedWidth, requestedHeight, requestedFPS);
             webCamTexture.Play();
             yield return new WaitUntil(() => webCamTexture.didUpdateThisFrame);

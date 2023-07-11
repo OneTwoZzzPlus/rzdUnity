@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 9ca5299dc87768e4a80c81b2b0f545bb
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - RussianRail G Pro
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 77822b5a03dfe684eb4f7c8c40c813bf, type: 3}
+  - {fileID: 12800000, guid: f5f8db7b58253a943b221b62b7269b5b, type: 3}
+  - {fileID: 12800000, guid: 2352b8ccbc1dc3744bb0ba89ccf831fc, type: 3}
+  - {fileID: 12800000, guid: 7483cd9b68c41fe41ade6a2714431707, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
