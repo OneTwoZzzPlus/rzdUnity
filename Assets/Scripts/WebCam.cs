@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace DefaultNamespace
+namespace SignsCV
 {
     public class WebCam : MonoBehaviour
     {

@@ -1,8 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
+using GameLogic;
 using UnityEngine;
 
-public static class WebGLBridge
+public static class WebGLBridge 
 {
     public static Action<int> OnExternalDetect { get; set; }
     public static Action<int, Matrix4x4> OnExternalCompute { get; set; }

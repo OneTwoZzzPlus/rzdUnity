@@ -1,4 +1,4 @@
-var LibraryGLClear = {
+ var LibraryGLClear = {
 	OnStartEngine: function(){
 		window.dispatchReactUnityEvent(
 			"OnStartEngine"
