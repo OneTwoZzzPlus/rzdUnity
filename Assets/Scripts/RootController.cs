@@ -1,3 +1,4 @@
+using Data;
 using Interfaces;
 using UnityEngine;
 using View;
@@ -6,22 +7,21 @@ namespace DefaultNamespace
 {
     public class RootController : MonoBehaviour
     {
+        public static RootController Instance;
 
         [SerializeField] private WebCam webCam;
-
-        public static RootController Instance;
         [SerializeField] private FakeTargetTracker fakeTargetTracker;
         [SerializeField] private RealTargetTracker realTargetTracker;
+        [SerializeField] private WindowController windowController;
+        [SerializeField] private SignDataRegistry signDataRegistry;
 
+
+        public IWindowController WindowController => windowController;
 #if UNITY_EDITOR
         public ITargetTracker TargetTracker => fakeTargetTracker;
 #else
         public ITargetTracker TargetTracker => realTargetTracker;
 #endif
-
-        [SerializeField] private WindowController windowController;
-        public IWindowController WindowController => windowController;
-
 
         public IStateMachine<ViewState> StateMachine => viewStateMachine;
         private ViewStateMachine viewStateMachine;
@@ -41,7 +41,7 @@ namespace DefaultNamespace
         {
             viewStateMachine = new ViewStateMachine(
                 new IState<ViewState>[] {
-                    new ARState(webCam, TargetTracker),
+                    new ARState(webCam, TargetTracker, signDataRegistry, windowController),
                     new LibraryState(),
                     new InfoState()
                 }, ViewState.AR);

@@ -25,9 +25,30 @@ public class ARWindow : BaseWindow
         signButton.onClick.AddListener(() => LibraryButtonClicked?.Invoke());
     }
 
-    public void SetSignNumber(int signNumber)
+    private void Start()
+    {
+        signButton.gameObject.SetActive(false);
+    }
+
+    public override void Show()
+    {
+        signButton.gameObject.SetActive(false);
+        base.Show();
+    }
+
+    public override void Hide()
+    {
+        StopAllCoroutines();
+        base.Show();
+    }
+
+    public void SetSignNumber(string signNumber)
     {
         signNumberText.text = $"Чэръ Й{signNumber}";
+    }
+    public void SetSignName(string signName)
+    {
+        signNameText.text = signName;
     }
     public void ShowSignButton()
     {

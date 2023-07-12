@@ -3,20 +3,28 @@ using Interfaces;
 using System;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Data;
 
 namespace View
 {
     public class ARState : IState<ViewState>
     {
 
-        private readonly WebCam webCam;
-        private readonly ITargetTracker targetTracker;
-
+        private WebCam webCam;
+        private ITargetTracker targetTracker;
+        private readonly IRegistry<SignData> signDataRegistry;
+        private IWindowController windowController;
         private ARWindow arWindow;
 
-        public ARState(WebCam webCam, ITargetTracker targetTracker) {
+        public ARState(WebCam webCam, 
+                       ITargetTracker targetTracker, 
+                       IRegistry<SignData> signDataRegistry,
+                       IWindowController windowController) 
+        {
             this.webCam = webCam;
             this.targetTracker = targetTracker;
+            this.signDataRegistry = signDataRegistry;
+            this.windowController = windowController;
             if (webCam)
             {
                 webCam.OnInitialized += OnWebcamInitialized;
@@ -34,8 +42,7 @@ namespace View
 
         public void Enter()
         {
-            arWindow = RootController.Instance.WindowController
-                                     .ShowWindow(typeof(ARWindow)) as ARWindow;
+            arWindow = windowController.ShowWindow(typeof(ARWindow)) as ARWindow;
 
             Assert.IsNotNull(arWindow);
 
@@ -58,24 +65,25 @@ namespace View
 
         public void Exit()
         {
-            RootController.Instance.WindowController.HideWindow(typeof(ARWindow));
+            windowController.HideWindow(typeof(ARWindow));
             targetTracker.TargetDetected -= TargetDetectedHandler;
             targetTracker.TargetLost -= TargetLostHandler;
         }
 
-        private void TargetDetectedHandler(int index)
+        private void TargetDetectedHandler(int targetId)
         {
-            arWindow?.ShowSignButton();
-            arWindow?.SetSignNumber(index);
+            var signData = signDataRegistry.Get(targetId);
+            if (signData)
+            {
+                arWindow?.ShowSignButton();
+                arWindow?.SetSignNumber(signData.Number);
+                arWindow?.SetSignName(signData.Name);
+            }
         }
 
-        private void TargetLostHandler(int index)
+        private void TargetLostHandler(int targetId)
         {
             arWindow?.HideSignButton();
-            arWindow?.SetSignNumber(index);
         }
-
-        private void TargetComputedHandler(int index, Matrix4x4 matrix) { }
-
     }
 }
