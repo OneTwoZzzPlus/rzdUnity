@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace DefaultNamespace
 {
@@ -18,7 +19,21 @@ namespace DefaultNamespace
         [SerializeField] private int requestedFPS = 30;
         [SerializeField] private bool staticCameraIndex = false;
        
-        [SerializeField][Range(0, 6)] private int requestedCameraIndex = 0;
+        [SerializeField][Range(0, 6)] private int cameraIndex = 0;
+        private int maxCameraIndex = 0;
+
+        public void switchCamera()
+        {
+            if (webCamTexture)
+                webCamTexture.Stop();
+
+            cameraIndex = cameraIndex >= maxCameraIndex ? 0 : cameraIndex + 1;
+            Debug.Log($"SWITCH {cameraIndex}");
+
+            staticCameraIndex = true;
+            Initiate();
+        }
+
         private void Start()
         {
             requestedHeight = Screen.height;
@@ -92,25 +107,27 @@ namespace DefaultNamespace
             }
 
             var devices = WebCamTexture.devices;
-            Debug.Log("webcam start found");
+            maxCameraIndex = devices.Length-1;
+            Debug.Log("Webcam start found");
 
             if (staticCameraIndex)
             {
-                webCamTexture = new WebCamTexture(devices[requestedCameraIndex].name, requestedWidth, requestedHeight, requestedFPS);
+                webCamTexture = new WebCamTexture(devices[cameraIndex].name, requestedWidth, requestedHeight, requestedFPS);
                 webCamTexture.Play();
                 yield return new WaitUntil(() => webCamTexture.didUpdateThisFrame);
                 OnInitialized?.Invoke();
             }
 
-            for (var cameraIndex = 0; cameraIndex < devices.Length; cameraIndex++)
+            for (var camIndex = 0; camIndex < devices.Length; camIndex++)
             {
-                var device = devices[cameraIndex];
-                Debug.Log($"devices[{cameraIndex}].name: {device.name}");
-                Debug.Log($"devices[{cameraIndex}].isFrontFacing: {device.isFrontFacing}");
+                var device = devices[camIndex];
+                Debug.Log($"devices[{camIndex}].name: {device.name}");
+                Debug.Log($"devices[{camIndex}].isFrontFacing: {device.isFrontFacing}");
                 if (device.isFrontFacing)
                     continue;
                 webCamTexture = new WebCamTexture(device.name, requestedWidth, requestedHeight, requestedFPS);
                 webCamTexture.Play();
+                cameraIndex = camIndex;
                 yield return new WaitUntil(() => webCamTexture.didUpdateThisFrame);
 
                 OnInitialized?.Invoke();
@@ -121,8 +138,8 @@ namespace DefaultNamespace
                 yield break;
             if (devices.Length <= 0)
                 yield break;
-            var deviceIndex = devices.Length > 1 ? 1 : 0;
-            webCamTexture = new WebCamTexture(devices[deviceIndex].name, requestedWidth, requestedHeight, requestedFPS);
+            cameraIndex = devices.Length > 1 ? 1 : 0;
+            webCamTexture = new WebCamTexture(devices[cameraIndex].name, requestedWidth, requestedHeight, requestedFPS);
             webCamTexture.Play();
             yield return new WaitUntil(() => webCamTexture.didUpdateThisFrame);
             OnInitialized?.Invoke();
