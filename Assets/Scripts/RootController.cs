@@ -18,16 +18,15 @@ namespace DefaultNamespace
 
         private TargetModel targetModel = new TargetModel();
 
-
         public IWindowController WindowController => windowController;
 #if UNITY_EDITOR
         public ITargetTracker TargetTracker => fakeTargetTracker;
 #else
         public ITargetTracker TargetTracker => realTargetTracker;
 #endif
-
-        public IStateMachine<ViewState> StateMachine => viewStateMachine;
+  
         private ViewStateMachine viewStateMachine;
+        public IStateMachine<ViewState> StateMachine => viewStateMachine;
 
         private void Awake()
         {
@@ -45,8 +44,8 @@ namespace DefaultNamespace
             viewStateMachine = new ViewStateMachine();
             viewStateMachine.Initialize(new IState<ViewState>[] {
                     new ARState(webCam, TargetTracker, signDataRegistry, windowController, targetModel, viewStateMachine),
-                    new LibraryState(windowController, targetModel, viewStateMachine),
-                    new InfoState(windowController, targetModel, viewStateMachine) 
+                    new LibraryState(signDataRegistry,windowController, targetModel, viewStateMachine),
+                    new InfoState(signDataRegistry,windowController, targetModel, viewStateMachine) 
             }, ViewState.AR);
         }
     }

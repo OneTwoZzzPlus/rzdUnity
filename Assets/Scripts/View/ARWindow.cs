@@ -39,6 +39,7 @@ public class ARWindow : BaseWindow
     public override void Hide()
     {
         StopAllCoroutines();
+        signButton.gameObject.SetActive(false);
         base.Show();
     }
 

@@ -4,6 +4,7 @@ using System;
 using UnityEngine.Assertions;
 using Data;
 using Model;
+using static UnityEngine.GraphicsBuffer;
 
 namespace View
 {
@@ -20,10 +21,10 @@ namespace View
 
         public ARState(WebCam webCam, 
                        ITargetTracker targetTracker, 
-                       IRegistry<SignData> signDataRegistry,
-                       IWindowController windowController,
-                       TargetModel targetModel,
-                       IStateMachine<ViewState> viewStateMachine) 
+                       SignDataRegistry signDataRegistry, 
+                       WindowController windowController, 
+                       TargetModel targetModel, 
+                       ViewStateMachine viewStateMachine)
         {
             this.webCam = webCam;
             this.targetTracker = targetTracker;
@@ -36,7 +37,6 @@ namespace View
                 webCam.OnInitialized += OnWebcamInitialized;
                 webCam.Initiate();
             }
-
         }
 
         private void OnWebcamInitialized()
@@ -59,6 +59,13 @@ namespace View
             targetTracker.TargetLost += TargetLostHandler;
         }
 
+        public void Exit()
+        { 
+            targetTracker.TargetDetected -= TargetDetectedHandler;
+            targetTracker.TargetLost -= TargetLostHandler;
+            windowController.HideWindow(typeof(ARWindow));
+        }
+
         private void SignButtonClickHandler()
         {
             viewStateMachine.ChangeState(ViewState.Info);
@@ -69,15 +76,9 @@ namespace View
             viewStateMachine.ChangeState(ViewState.Library);
         }
 
-        public void Exit()
-        {
-            windowController.HideWindow(typeof(ARWindow));
-            targetTracker.TargetDetected -= TargetDetectedHandler;
-            targetTracker.TargetLost -= TargetLostHandler;
-        }
-
         private void TargetDetectedHandler(int targetId)
         {
+            targetModel.Id = targetId;
             var signData = signDataRegistry.Get(targetId);
             if (signData)
             {
@@ -85,14 +86,12 @@ namespace View
                 arWindow?.SetSignNumber(signData.Number);
                 arWindow?.SetSignName(signData.Name);
             }
-
-            targetModel.Id = targetId;
         }
 
         private void TargetLostHandler(int targetId)
         {
             arWindow?.HideSignButton();
-            targetModel.Id = -1;
+            //targetModel.Id = -1;
         }
     }
 }
