@@ -22,7 +22,7 @@ public class ARWindow : BaseWindow
     private void Awake()
     {
         libraryButton.onClick.AddListener(() => LibraryButtonClicked?.Invoke());
-        signButton.onClick.AddListener(() => LibraryButtonClicked?.Invoke());
+        signButton.onClick.AddListener(() => SignButtonClicked?.Invoke());
     }
 
     private void Start()

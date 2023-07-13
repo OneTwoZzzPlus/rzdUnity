@@ -5,12 +5,12 @@ namespace View
 {
     public class ViewStateMachine : IStateMachine<ViewState>
     {
-        private readonly Dictionary<ViewState, IState<ViewState>> states;
+        private Dictionary<ViewState, IState<ViewState>> states;
 
         private ViewState currentStateId;
         private ViewState previousStateId;
 
-        public ViewStateMachine(IState<ViewState>[] states, ViewState initialStateID)
+        public void Initialize(IState<ViewState>[] states, ViewState initialStateID)
         {
             this.states = new Dictionary<ViewState, IState<ViewState>>();
             foreach (var state in states) this.states.Add(state.Id, state);

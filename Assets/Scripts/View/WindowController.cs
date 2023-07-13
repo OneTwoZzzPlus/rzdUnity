@@ -15,7 +15,7 @@ namespace View
 
         private IWindow CreateWindow(Type windowType)
         {
-            var first = windowPrefabs.First(p => p.GetComponents(windowType) is {});
+            var first = windowPrefabs.FirstOrDefault(p => p.GetComponent(windowType) is {});
             if (first is null) {
                 Debug.LogError($"Can't create window of type {windowType}");
                 return null;

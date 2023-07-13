@@ -1,9 +1,9 @@
 using DefaultNamespace;
 using Interfaces;
 using System;
-using UnityEngine;
 using UnityEngine.Assertions;
 using Data;
+using Model;
 
 namespace View
 {
@@ -14,17 +14,23 @@ namespace View
         private ITargetTracker targetTracker;
         private readonly IRegistry<SignData> signDataRegistry;
         private IWindowController windowController;
+        private readonly TargetModel targetModel;
+        private readonly IStateMachine<ViewState> viewStateMachine;
         private ARWindow arWindow;
 
         public ARState(WebCam webCam, 
                        ITargetTracker targetTracker, 
                        IRegistry<SignData> signDataRegistry,
-                       IWindowController windowController) 
+                       IWindowController windowController,
+                       TargetModel targetModel,
+                       IStateMachine<ViewState> viewStateMachine) 
         {
             this.webCam = webCam;
             this.targetTracker = targetTracker;
             this.signDataRegistry = signDataRegistry;
             this.windowController = windowController;
+            this.targetModel = targetModel;
+            this.viewStateMachine = viewStateMachine;
             if (webCam)
             {
                 webCam.OnInitialized += OnWebcamInitialized;
@@ -55,12 +61,12 @@ namespace View
 
         private void SignButtonClickHandler()
         {
-            throw new NotImplementedException();
+            viewStateMachine.ChangeState(ViewState.Info);
         }
 
         private void LibraryButtonClickHandler()
         {
-            throw new NotImplementedException();
+            viewStateMachine.ChangeState(ViewState.Library);
         }
 
         public void Exit()
@@ -79,11 +85,14 @@ namespace View
                 arWindow?.SetSignNumber(signData.Number);
                 arWindow?.SetSignName(signData.Name);
             }
+
+            targetModel.Id = targetId;
         }
 
         private void TargetLostHandler(int targetId)
         {
             arWindow?.HideSignButton();
+            targetModel.Id = -1;
         }
     }
 }

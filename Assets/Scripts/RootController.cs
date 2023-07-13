@@ -1,5 +1,6 @@
 using Data;
 using Interfaces;
+using Model;
 using UnityEngine;
 using View;
 
@@ -14,6 +15,8 @@ namespace DefaultNamespace
         [SerializeField] private RealTargetTracker realTargetTracker;
         [SerializeField] private WindowController windowController;
         [SerializeField] private SignDataRegistry signDataRegistry;
+
+        private TargetModel targetModel = new TargetModel();
 
 
         public IWindowController WindowController => windowController;
@@ -39,12 +42,12 @@ namespace DefaultNamespace
 
         private void Start()
         {
-            viewStateMachine = new ViewStateMachine(
-                new IState<ViewState>[] {
-                    new ARState(webCam, TargetTracker, signDataRegistry, windowController),
-                    new LibraryState(),
-                    new InfoState()
-                }, ViewState.AR);
+            viewStateMachine = new ViewStateMachine();
+            viewStateMachine.Initialize(new IState<ViewState>[] {
+                    new ARState(webCam, TargetTracker, signDataRegistry, windowController, targetModel, viewStateMachine),
+                    new LibraryState(windowController, targetModel, viewStateMachine),
+                    new InfoState(windowController, targetModel, viewStateMachine) 
+            }, ViewState.AR);
         }
     }
 }
