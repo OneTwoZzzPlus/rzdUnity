@@ -10,7 +10,7 @@ namespace Data
         public Sprite Sprite;
         public string Name;
         public string Number;
-        public string Description;
+        [Multiline(10)] public string Description;
 
     }
 }

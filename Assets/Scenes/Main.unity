@@ -503,7 +503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windowPrefabs:
   - {fileID: 326187536468938217, guid: a0a793872cba6e24aa4410b9e33f03e9, type: 3}
-  - {fileID: 3840747028721257415, guid: d410139c5b036bc4d987b7aa94df8f69, type: 3}
+  - {fileID: 8570310782354922774, guid: b980226e588619840b67a45ab81d28c6, type: 3}
   - {fileID: 4550003391187876201, guid: 9dce563b2086248498083b1b6ac478e2, type: 3}
   canvas: {fileID: 1710174045}
 --- !u!1 &1710174041
