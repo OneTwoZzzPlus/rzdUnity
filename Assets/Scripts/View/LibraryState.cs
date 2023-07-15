@@ -32,6 +32,11 @@ namespace View
         {
             libraryWindow = windowController.ShowWindow(typeof(LibraryWindow)) as LibraryWindow;
             libraryWindow.ARButtonClicked += ARButtonClickHandler;
+
+            foreach (var signData in signDataRegistry.GetAll())
+            {
+                libraryWindow.CreateSign(signData.Id, signData.Sprite);
+            }
         }
 
         public void Exit()

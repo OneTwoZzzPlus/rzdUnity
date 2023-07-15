@@ -291,6 +291,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ARButton: {fileID: 3003872855572227702}
+  verticalSignPrefab: {fileID: 7867714467923119282, guid: 1f0d9e0eed89c8b409e78a56fda2fbd6, type: 3}
+  horizontalSignPrefab: {fileID: 6247743347055657075, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+  libraryPanelPrefab: {fileID: 6163109110495584728, guid: cbd0213fecf40dc40b7cfe917a0d1ac5, type: 3}
+  contentParent: {fileID: 686041825551077343}
 --- !u!1 &686041825551077340
 GameObject:
   m_ObjectHideFlags: 0
