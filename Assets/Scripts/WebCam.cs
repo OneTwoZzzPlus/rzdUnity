@@ -48,7 +48,7 @@ namespace DefaultNamespace
 
             var widthScale = (float) Screen.width / width;
             var heightScale = (float) Screen.height / height;
-            if (widthScale < heightScale)
+            if (widthScale > heightScale)
             {
                 if (Camera.main is not null)
                     Camera.main.orthographicSize = (width * (float) Screen.height / Screen.width) / 2;

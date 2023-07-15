@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-public class IWindowController : MonoBehaviour
+namespace Interfaces
 {
-    // Start is called before the first frame update
-    void Start()
+    public interface IWindowController
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        IWindow ShowWindow(Type type);
+        void HideWindow(Type window);
     }
 }

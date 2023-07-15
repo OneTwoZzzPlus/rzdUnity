@@ -15,3 +15,7 @@ MonoBehaviour:
   _fonts:
   - Name: LieberationSans
     Font: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - Name: RussianRailGPro-Reg
+    Font: {fileID: 11400000, guid: 9bfbef38dffb18f47b009ba41ce773d7, type: 2}
+  - Name: RussianRailGPro-Medium
+    Font: {fileID: 11400000, guid: 5f5a3c3e23811834ca160f2ed5792c06, type: 2}
