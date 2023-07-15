@@ -30,17 +30,11 @@ public class ARWindow : BaseWindow
         signButton.gameObject.SetActive(false);
     }
 
-    public override void Show()
-    {
-        signButton.gameObject.SetActive(false);
-        base.Show();
-    }
-
     public override void Hide()
     {
         StopAllCoroutines();
         signButton.gameObject.SetActive(false);
-        base.Show();
+        base.Hide();
     }
 
     public void SetSignNumber(string signNumber)
@@ -64,12 +58,13 @@ public class ARWindow : BaseWindow
             courotineWLFD = null;
         }
         lostFlag = true;
-        courotineWLFD = StartCoroutine(WaitLostForDuration());
+        courotineWLFD = StartCoroutine(WaitLostForDuration(1f, 
+            () => { if (lostFlag) signButton.gameObject.SetActive(false); }));
     }
 
-    IEnumerator WaitLostForDuration()
+    IEnumerator WaitLostForDuration(float delay, Action doAction)
     {
         yield return new WaitForSeconds(delay);
-        if (lostFlag) signButton.gameObject.SetActive(false);
+        doAction?.Invoke();
     }
 }
