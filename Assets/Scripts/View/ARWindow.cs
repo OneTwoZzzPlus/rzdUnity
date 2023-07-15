@@ -58,11 +58,11 @@ public class ARWindow : BaseWindow
             courotineWLFD = null;
         }
         lostFlag = true;
-        courotineWLFD = StartCoroutine(WaitLostForDuration(1f, 
+        courotineWLFD = StartCoroutine(WaitLostForDuration(
             () => { if (lostFlag) signButton.gameObject.SetActive(false); }));
     }
 
-    IEnumerator WaitLostForDuration(float delay, Action doAction)
+    IEnumerator WaitLostForDuration(Action doAction)
     {
         yield return new WaitForSeconds(delay);
         doAction?.Invoke();

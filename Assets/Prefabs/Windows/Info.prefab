@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Content: {fileID: 5992090744375402501}
-  m_Horizontal: 1
+  m_Horizontal: 0
   m_Vertical: 1
   m_MovementType: 1
   m_Elasticity: 0.1
@@ -492,8 +492,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 138, y: -299}
-  m_SizeDelta: {x: -288, y: 168.47}
+  m_AnchoredPosition: {x: 100, y: -251}
+  m_SizeDelta: {x: -180, y: 216.47}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &8570310782086007046
 CanvasRenderer:
@@ -551,15 +551,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64
-  m_fontSizeBase: 64
+  m_fontSize: 58
+  m_fontSizeBase: 58
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -799,8 +799,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0417\u043D\u0430\u043A "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 29fcbe0113919eb4ca05cbca26f64f38, type: 2}
-  m_sharedMaterial: {fileID: 1875328360479215695, guid: 29fcbe0113919eb4ca05cbca26f64f38, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7fa6ddbf6899250428361797cad9ecd0, type: 2}
+  m_sharedMaterial: {fileID: -7396556792649176698, guid: 7fa6ddbf6899250428361797cad9ecd0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -824,14 +824,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
-  m_fontSizeBase: 48
+  m_fontSize: 54
+  m_fontSizeBase: 54
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 8
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -1133,6 +1133,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3944a4623dfb2ec40af6cac081dd98e4, type: 3}
+--- !u!114 &7741029658078473300 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8600123729679090192, guid: 3944a4623dfb2ec40af6cac081dd98e4, type: 3}
+  m_PrefabInstance: {fileID: 2032371938913545796}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8570310781945565534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8570310781945565533 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7699945612300074777, guid: 3944a4623dfb2ec40af6cac081dd98e4, type: 3}
@@ -1183,7 +1194,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 7741029658078473300}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
