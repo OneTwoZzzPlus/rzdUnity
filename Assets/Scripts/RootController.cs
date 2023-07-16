@@ -48,7 +48,8 @@ namespace DefaultNamespace
 
             foreach (var signData in signDataRegistry.GetAll())
             {
-                signInventory.CreateModel(signData);
+                var model = signInventory.CreateModel(signData);
+                model?.Load();
             }
 
             viewStateMachine = new ViewStateMachine();

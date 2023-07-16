@@ -88,6 +88,7 @@ namespace View
                     return;
                 signModel.IsFound = true;
                 signModel.FoundTime = DateTime.Now;
+                signModel.Save();
 
             }
         }
