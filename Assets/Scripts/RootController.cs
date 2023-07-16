@@ -28,6 +28,8 @@ namespace DefaultNamespace
         private ViewStateMachine viewStateMachine;
         public IStateMachine<ViewState> StateMachine => viewStateMachine;
 
+        private SignInventory signInventory;
+
         private void Awake()
         {
             var rootControllers = FindObjectsOfType<RootController>();
@@ -41,11 +43,19 @@ namespace DefaultNamespace
 
         private void Start()
         {
+            var signFactory = new SignModel.Factory();
+            signInventory = new SignInventory(signFactory);
+
+            foreach (var signData in signDataRegistry.GetAll())
+            {
+                signInventory.CreateModel(signData);
+            }
+
             viewStateMachine = new ViewStateMachine();
             viewStateMachine.Initialize(new IState<ViewState>[] {
-                    new ARState(webCam, TargetTracker, signDataRegistry, windowController, targetModel, viewStateMachine),
-                    new LibraryState(signDataRegistry,windowController, targetModel, viewStateMachine),
-                    new InfoState(signDataRegistry,windowController, targetModel, viewStateMachine) 
+                    new ARState(webCam, TargetTracker, signInventory, windowController, targetModel, viewStateMachine),
+                    new LibraryState(signInventory,windowController, targetModel, viewStateMachine),
+                    new InfoState(signInventory,windowController, targetModel, viewStateMachine) 
             }, ViewState.AR);
         }
     }

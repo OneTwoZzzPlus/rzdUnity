@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,20 +8,50 @@ using View;
 public class LibraryWindow : BaseWindow
 {
     public event Action ARButtonClicked;
+    public event Action RewindButtonClicked;
     public event Action<int> SignButtonClicked;
 
     [SerializeField] private Button ARButton;
-
+    [SerializeField] private Button rewindButton;
+    [SerializeField] private ScrollRect scroll;
+    [SerializeField] private float scrollDuration = 3f;
     [SerializeField] private SignView verticalSignPrefab;
     [SerializeField] private SignView horizontalSignPrefab;
     [SerializeField] private GameObject libraryPanelPrefab;
     [SerializeField] private Transform contentParent;
 
     private Dictionary<int, SignView> signViews = new Dictionary<int, SignView>();
+    private Coroutine scrollCoroutine;
 
     private void Awake()
     {
         ARButton.onClick.AddListener(() => ARButtonClicked?.Invoke());
+        scroll.onValueChanged.AddListener((v) => rewindButton.gameObject.SetActive(v.y < 0.8f));
+        rewindButton.onClick.AddListener(() => ScrollUp());
+        rewindButton.gameObject.SetActive(false);
+    }
+
+    private void ScrollUp()
+    {
+        if (scrollCoroutine is not null) { 
+            StopCoroutine(scrollCoroutine);
+            scrollCoroutine = null;
+        }
+        
+        scrollCoroutine = StartCoroutine(ScrollUp(scrollDuration));
+    }
+
+    IEnumerator ScrollUp(float duration)
+    {
+        var time = duration;
+        var ratio = 1f;
+        while (time > 0f)
+        {
+            time -= Time.deltaTime;
+            ratio = 1 - time / duration;
+            scroll.verticalNormalizedPosition = Mathf.Lerp(scroll.verticalNormalizedPosition, 1f, ratio * ratio);
+            yield return null;
+        }
     }
 
     public void SetSignFound(int id, DateTime time)
@@ -33,6 +64,8 @@ public class LibraryWindow : BaseWindow
 
     public void CreateSign(int id, Sprite sprite)
     {
+        if (signViews.ContainsKey(id)) return;
+
         var prefab = IsVertical(sprite) ? verticalSignPrefab : horizontalSignPrefab;
         var panel = GetOrCreatePanel(sprite);
 

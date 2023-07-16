@@ -11,18 +11,18 @@ namespace View
         private readonly IWindowController windowController;
         private readonly TargetModel targetModel;
         private readonly IStateMachine<ViewState> viewStateMachine;
-        private SignDataRegistry signDataRegistry;
+        private SignInventory signInventory;
 
         private LibraryWindow libraryWindow;
 
         public ViewState Id => ViewState.Library;
 
-        public LibraryState(SignDataRegistry signDataRegistry, 
+        public LibraryState(SignInventory signInventory, 
                             WindowController windowController, 
                             TargetModel targetModel, 
                             ViewStateMachine viewStateMachine)
         {
-            this.signDataRegistry = signDataRegistry;
+            this.signInventory = signInventory;
             this.windowController = windowController;
             this.targetModel = targetModel;
             this.viewStateMachine = viewStateMachine;
@@ -32,8 +32,9 @@ namespace View
         {
             libraryWindow = windowController.ShowWindow(typeof(LibraryWindow)) as LibraryWindow;
             libraryWindow.ARButtonClicked += ARButtonClickHandler;
+            libraryWindow.SignButtonClicked += SignButtonClickHandler;
 
-            foreach (var signData in signDataRegistry.GetAll())
+            foreach (var signData in signInventory.GetAll())
             {
                 libraryWindow.CreateSign(signData.Id, signData.Sprite);
             }
@@ -42,12 +43,19 @@ namespace View
         public void Exit()
         {
             libraryWindow.ARButtonClicked -= ARButtonClickHandler;
+            libraryWindow.SignButtonClicked -= SignButtonClickHandler;
             windowController.HideWindow(typeof(LibraryWindow));
         }
 
         private void ARButtonClickHandler()
         {
             viewStateMachine.ChangeState(ViewState.AR);
+        }
+
+        private void SignButtonClickHandler(int id)
+        {
+            targetModel.Id = id;
+            viewStateMachine.ChangeState(ViewState.Info);
         }
     }
 }

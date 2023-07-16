@@ -8,7 +8,7 @@ namespace View
 {
     public class InfoState : IState<ViewState>
     {
-        private readonly IRegistry<SignData> signDataRegistry;
+        private readonly SignInventory signInventory;
         private readonly IWindowController windowController;
         private readonly TargetModel targetModel;
         private readonly IStateMachine<ViewState> viewStateMachine;
@@ -17,12 +17,12 @@ namespace View
 
         public ViewState Id => ViewState.Info;
 
-        public InfoState(SignDataRegistry signDataRegistry, 
+        public InfoState(SignInventory signInventory, 
                          WindowController windowController, 
                          TargetModel targetModel, 
                          ViewStateMachine viewStateMachine)
         {
-            this.signDataRegistry = signDataRegistry;
+            this.signInventory = signInventory;
             this.windowController = windowController;
             this.targetModel = targetModel;
             this.viewStateMachine = viewStateMachine;
@@ -36,8 +36,8 @@ namespace View
             signInfoWindow.BackButtonClicked += BackButtonClickHandler;
             windowController.ShowWindow(typeof(SignInfoWindow));
 
-            var signData = signDataRegistry.Get(targetModel.Id);
-            if (signData)
+            var signData = signInventory.GetModel(targetModel.Id);
+            if (signData is {})
             {
                 signInfoWindow.SetSignName(signData.Name);
                 signInfoWindow.SetSignNumber(signData.Number);

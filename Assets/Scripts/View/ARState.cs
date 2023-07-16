@@ -13,22 +13,22 @@ namespace View
 
         private WebCam webCam;
         private ITargetTracker targetTracker;
-        private readonly IRegistry<SignData> signDataRegistry;
+        private readonly SignInventory signInventory;
         private IWindowController windowController;
         private readonly TargetModel targetModel;
         private readonly IStateMachine<ViewState> viewStateMachine;
         private ARWindow arWindow;
 
         public ARState(WebCam webCam, 
-                       ITargetTracker targetTracker, 
-                       SignDataRegistry signDataRegistry, 
+                       ITargetTracker targetTracker,
+                       SignInventory signInventory, 
                        WindowController windowController, 
                        TargetModel targetModel, 
                        ViewStateMachine viewStateMachine)
         {
             this.webCam = webCam;
             this.targetTracker = targetTracker;
-            this.signDataRegistry = signDataRegistry;
+            this.signInventory = signInventory;
             this.windowController = windowController;
             this.targetModel = targetModel;
             this.viewStateMachine = viewStateMachine;
@@ -79,19 +79,24 @@ namespace View
         private void TargetDetectedHandler(int targetId)
         {
             targetModel.Id = targetId;
-            var signData = signDataRegistry.Get(targetId);
-            if (signData)
+            var signModel = signInventory.GetModel(targetId);
+            if (signModel is {})
             {
                 arWindow?.ShowSignButton();
-                arWindow?.SetSignNumber(signData.Number);
-                arWindow?.SetSignName(signData.Name);
+                arWindow?.SetSignNumber(signModel.Number);
+                arWindow?.SetSignName(signModel.Name);
+
+                if (signModel.IsFound) 
+                    return;
+                signModel.IsFound = true;
+                signModel.FoundTime = DateTime.Now;
+
             }
         }
 
         private void TargetLostHandler(int targetId)
         {
             arWindow?.HideSignButton();
-            //targetModel.Id = -1;
         }
     }
 }
