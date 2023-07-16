@@ -19,7 +19,7 @@ namespace View
         private void Awake()
         {
             button.onClick.AddListener(() => ButtonClicked?.Invoke());
-            foundFrame.gameObject.SetActive(isFound);
+            foundFrame.SetActive(isFound);
         }
 
         public void SetSprite(Sprite sprite)

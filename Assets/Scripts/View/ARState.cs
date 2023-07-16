@@ -11,10 +11,9 @@ namespace View
     public class ARState : IState<ViewState>
     {
 
-        private WebCam webCam;
-        private ITargetTracker targetTracker;
+        private readonly ITargetTracker targetTracker;
         private readonly SignInventory signInventory;
-        private IWindowController windowController;
+        private readonly IWindowController windowController;
         private readonly TargetModel targetModel;
         private readonly IStateMachine<ViewState> viewStateMachine;
         private ARWindow arWindow;
@@ -26,7 +25,6 @@ namespace View
                        TargetModel targetModel, 
                        ViewStateMachine viewStateMachine)
         {
-            this.webCam = webCam;
             this.targetTracker = targetTracker;
             this.signInventory = signInventory;
             this.windowController = windowController;
@@ -82,9 +80,9 @@ namespace View
             var signModel = signInventory.GetModel(targetId);
             if (signModel is {})
             {
-                arWindow?.ShowSignButton();
-                arWindow?.SetSignNumber(signModel.Number);
-                arWindow?.SetSignName(signModel.Name);
+                arWindow.ShowSignButton();
+                arWindow.SetSignNumber(signModel.Number);
+                arWindow.SetSignName(signModel.Name);
 
                 if (signModel.IsFound) 
                     return;
@@ -96,7 +94,7 @@ namespace View
 
         private void TargetLostHandler(int targetId)
         {
-            arWindow?.HideSignButton();
+            arWindow.HideSignButton();
         }
     }
 }

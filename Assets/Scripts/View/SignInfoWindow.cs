@@ -1,3 +1,4 @@
+using Model;
 using System;
 using TMPro;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class SignInfoWindow : BaseWindow
     [SerializeField] private TextMeshProUGUI signNumberText;
     [SerializeField] private TextMeshProUGUI signNameText;
     [SerializeField] private TextMeshProUGUI signDescriptionText;
+    [SerializeField] private TextMeshProUGUI foundDateText;
     [SerializeField] private Image signImage;
 
     private void Awake()
@@ -35,5 +37,12 @@ public class SignInfoWindow : BaseWindow
     public void SetSignDescription(string signDescription)
     {
         signDescriptionText.text = signDescription;
+    }
+
+    public void SetFound(bool isFound, DateTime foundTime)
+    {
+        foundDateText.gameObject.SetActive(isFound);
+        if (isFound)
+            foundDateText.text = $"Обнаружен<br>{foundTime.ToShortDateString()}";
     }
 }

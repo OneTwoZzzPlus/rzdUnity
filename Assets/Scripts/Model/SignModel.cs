@@ -8,7 +8,7 @@ namespace Model
 {
     public class SignModel: IModel
     {
-        private SignData signData;
+        private readonly SignData signData;
         public int Id => signData.Id;
         public Sprite Sprite => signData.Sprite;
         public string Name => signData.Name;

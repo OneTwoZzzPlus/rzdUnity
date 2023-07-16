@@ -5,7 +5,7 @@ using Interfaces;
 public abstract class AbstractInventory<TModel, TSettings> : IInventory<TModel> where TModel : class, IModel
 {
     private readonly IFactory<TSettings, TModel> factory;
-    private readonly List<TModel> models = new List<TModel>(); 
+    private readonly List<TModel> models = new(); 
         
     public AbstractInventory(IFactory<TSettings, TModel> factory)
     {

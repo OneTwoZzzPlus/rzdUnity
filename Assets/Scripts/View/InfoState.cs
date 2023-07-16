@@ -36,13 +36,14 @@ namespace View
             signInfoWindow.BackButtonClicked += BackButtonClickHandler;
             windowController.ShowWindow(typeof(SignInfoWindow));
 
-            var signData = signInventory.GetModel(targetModel.Id);
-            if (signData is {})
+            var signModel = signInventory.GetModel(targetModel.Id);
+            if (signModel is {})
             {
-                signInfoWindow.SetSignName(signData.Name);
-                signInfoWindow.SetSignNumber(signData.Number);
-                signInfoWindow.SetSignDescription(signData.Description);
-                signInfoWindow.SetImage(signData.Sprite);
+                signInfoWindow.SetSignName(signModel.Name);
+                signInfoWindow.SetSignNumber(signModel.Number);
+                signInfoWindow.SetSignDescription(signModel.Description);
+                signInfoWindow.SetImage(signModel.Sprite);
+                signInfoWindow.SetFound(signModel.IsFound, signModel.FoundTime);
             }
                 
         }

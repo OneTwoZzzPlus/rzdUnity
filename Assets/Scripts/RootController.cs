@@ -16,7 +16,7 @@ namespace DefaultNamespace
         [SerializeField] private WindowController windowController;
         [SerializeField] private SignDataRegistry signDataRegistry;
 
-        private TargetModel targetModel = new TargetModel();
+        private readonly TargetModel targetModel = new();
 
         public IWindowController WindowController => windowController;
 #if UNITY_EDITOR

@@ -20,7 +20,7 @@ public class LibraryWindow : BaseWindow
     [SerializeField] private GameObject libraryPanelPrefab;
     [SerializeField] private Transform contentParent;
 
-    private Dictionary<int, SignView> signViews = new Dictionary<int, SignView>();
+    private Dictionary<int, SignView> signViews = new();
     private Coroutine scrollCoroutine;
 
     private void Awake()
@@ -54,12 +54,10 @@ public class LibraryWindow : BaseWindow
         }
     }
 
-    public void SetSignFound(int id, DateTime time)
+    public void SetSignFound(int id, bool isFound, DateTime time)
     {
-        if (signViews.TryGetValue(id, out var view))
-        {
+        if (isFound && signViews.TryGetValue(id, out var view))
             view.SetFound(time);
-        }
     }
 
     public void CreateSign(int id, Sprite sprite)

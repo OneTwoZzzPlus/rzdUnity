@@ -11,7 +11,7 @@ namespace View
         private readonly IWindowController windowController;
         private readonly TargetModel targetModel;
         private readonly IStateMachine<ViewState> viewStateMachine;
-        private SignInventory signInventory;
+        private readonly SignInventory signInventory;
 
         private LibraryWindow libraryWindow;
 
@@ -34,9 +34,10 @@ namespace View
             libraryWindow.ARButtonClicked += ARButtonClickHandler;
             libraryWindow.SignButtonClicked += SignButtonClickHandler;
 
-            foreach (var signData in signInventory.GetAll())
+            foreach (var signModel in signInventory.GetAll())
             {
-                libraryWindow.CreateSign(signData.Id, signData.Sprite);
+                libraryWindow.CreateSign(signModel.Id, signModel.Sprite);
+                libraryWindow.SetSignFound(signModel.Id, signModel.IsFound, signModel.FoundTime);
             }
         }
 
