@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 7678910885866717087}
   - component: {fileID: 9084063998733747893}
   m_Layer: 0
-  m_Name: Library Button
+  m_Name: Library Button 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

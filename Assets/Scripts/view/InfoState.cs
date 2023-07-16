@@ -9,7 +9,7 @@ namespace View
 {
     public class InfoState : IState<ViewState>
     {
-        private readonly IRegistry<SignData> signDataRegistry;
+        private readonly SignInventory signInventory;
         private readonly IWindowController windowController;
         private readonly TargetModel targetModel;
         private readonly IStateMachine<ViewState> viewStateMachine;
@@ -22,12 +22,12 @@ namespace View
             IWindowController windowController, 
             TargetModel targetModel, 
             ViewStateMachine viewStateMachine,
-            SignDataRegistry signDataRegistry) 
+            SignInventory signDataRegistry) 
         { 
             this.windowController = windowController;
             this.targetModel = targetModel;
             this.viewStateMachine = viewStateMachine;
-            this.signDataRegistry = signDataRegistry;
+            this.signInventory = signDataRegistry;
         }
 
         public void Enter()
@@ -37,13 +37,14 @@ namespace View
 
             signInfoWindow.BackButtonClicked += BackButtonClickHandler;
 
-            var signData = signDataRegistry.Get(targetModel.Id);
-            if (signData)
+            var signModel = signInventory.GetModel(targetModel.Id);
+            if (signModel is { })
             {
-                signInfoWindow.SetSignName(signData.Name);
-                signInfoWindow.SetSignNumber(signData.Number);
-                signInfoWindow.SetSignDescription(signData.Description);
-                signInfoWindow.SetImage(signData.Sprite);
+                signInfoWindow.SetSignName(signModel.Name);
+                signInfoWindow.SetSignNumber(signModel.Number);
+                signInfoWindow.SetSignDescription(signModel.Description);
+                signInfoWindow.SetImage(signModel.Sprite);
+                signInfoWindow.SetFound(signModel.IsFound, signModel.FoundTime);
             }
         }
         public void Exit()

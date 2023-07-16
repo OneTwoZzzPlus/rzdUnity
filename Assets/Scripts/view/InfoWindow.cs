@@ -13,6 +13,7 @@ public class InfoWindow : BaseWindow
     [SerializeField] private TextMeshProUGUI signNumberText;
     [SerializeField] private TextMeshProUGUI signNameText;
     [SerializeField] private TextMeshProUGUI signDescriptionText;
+    [SerializeField] private TextMeshProUGUI foundDateText;
     [SerializeField] private Image signImage;
 
     private void Awake()
@@ -36,5 +37,12 @@ public class InfoWindow : BaseWindow
     public void SetSignDescription(string signDescription)
     {
         signDescriptionText.text = signDescription;
+    }
+
+    internal void SetFound(bool isFound, DateTime signModelFoundTime)
+    {
+        foundDateText.gameObject.SetActive(isFound);
+        if (isFound) 
+            foundDateText.text = $"Обнаружен {signModelFoundTime.ToShortDateString()}";
     }
 }

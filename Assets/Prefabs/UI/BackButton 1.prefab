@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7b4f484ba01c8e34faa8b3923a3a14f0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6eae2f36304ad064a932bce5ab39e364, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 8739198833653272799}
   - component: {fileID: 8739198833653272798}
   m_Layer: 0
-  m_Name: BackButton
+  m_Name: BackButton 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 16e97366fecfb6e44876f147a0ba99c2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9fae5a659652cf043af011785c0228bf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -622,7 +622,7 @@ MonoBehaviour:
   fakeTargetTracker: {fileID: 1545913359}
   realTargetTracker: {fileID: 1545913358}
   windowController: {fileID: 1011253456}
-  signDataRegistry: {fileID: 11400000, guid: a01a67221109e734ebf9798847c96353, type: 2}
+  signDataRegistry: {fileID: 11400000, guid: 805b5e458fe57c14798638a73462bdb1, type: 2}
 --- !u!4 &1545913361
 Transform:
   m_ObjectHideFlags: 0

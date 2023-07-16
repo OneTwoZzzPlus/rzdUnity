@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sign 30
   m_EditorClassIdentifier: 
   Id: 30
-  Sprite: {fileID: 21300000, guid: 187591a33bb21ea4b956e7ed07c25bcf, type: 3}
+  Sprite: {fileID: 21300000, guid: a5b4a581762387544a17b0412e2de90b, type: 3}
   Name: "\u042D\u0442\u043E\u0442 \u0441\u043D\u0438\u043C\u043E\u043A \u043C\u043E\u0436\u0435\u0442
     \u0441\u0442\u0430\u0442\u044C \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u043C!"
   Number: 5.6.3

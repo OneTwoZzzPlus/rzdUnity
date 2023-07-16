@@ -13,7 +13,7 @@ namespace View
 
         private WebCam webCam;
         private ITargetTracker targetTracker;
-        private readonly IRegistry<SignData> signDataRegistry;
+        private readonly SignInventory signInventory;
         private IWindowController windowController;
         private ARWindow arWindow;
         private readonly TargetModel targetModel;
@@ -21,14 +21,14 @@ namespace View
 
         public ARState(WebCam webCam,
                        ITargetTracker targetTracker,
-                       IRegistry<SignData> signDataRegistry,
+                       SignInventory signDataRegistry,
                        IWindowController windowController,
                        TargetModel targetModel,
                        IStateMachine<ViewState> stateMachine)
         {
             this.webCam = webCam;
             this.targetTracker = targetTracker;
-            this.signDataRegistry = signDataRegistry;
+            this.signInventory = signDataRegistry;
             this.windowController = windowController;
             this.targetModel = targetModel;
             this.stateMachine = stateMachine;
@@ -79,14 +79,19 @@ namespace View
 
         private void TargetDetectedHandler(int targetId)
         {
-            var signData = signDataRegistry.Get(targetId);
-            if (signData)
+            targetModel.Id = targetId;
+            var signModel = signInventory.GetModel(targetId);
+            if (signModel is { })
             {
                 arWindow?.ShowSignButton();
-                arWindow?.SetSignNumber(signData.Number);
-                arWindow?.SetSignName(signData.Name);
+                arWindow?.SetSignNumber(signModel.Number);
+                arWindow?.SetSignName(signModel.Name);
+
+                if (signModel.IsFound)
+                    return;
+                signModel.IsFound = true;
+                signModel.FoundTime = DateTime.Now;
             }
-            targetModel.Id = targetId;
         }
 
         private void TargetLostHandler(int targetId)
