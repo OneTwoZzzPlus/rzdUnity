@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -82,13 +83,10 @@ namespace DefaultNamespace
 
             var devices = WebCamTexture.devices;
             Debug.Log("webcam start found");
-
-            if (staticCameraIndex)
-            {
-                webCamTexture = new WebCamTexture(devices[requestedCameraIndex].name, requestedWidth, requestedHeight, requestedFPS);
-                webCamTexture.Play();
-                yield return new WaitUntil(() => webCamTexture.didUpdateThisFrame);
-                OnInitialized?.Invoke();
+            var deviceName = string.Empty;
+            
+            if (staticCameraIndex) {
+                deviceName = devices[requestedCameraIndex].name;
             }
 
             for (var cameraIndex = 0; cameraIndex < devices.Length; cameraIndex++)
@@ -96,22 +94,30 @@ namespace DefaultNamespace
                 var device = devices[cameraIndex];
                 Debug.Log($"devices[{cameraIndex}].name: {device.name}");
                 Debug.Log($"devices[{cameraIndex}].isFrontFacing: {device.isFrontFacing}");
+                Debug.Log($"devices[{cameraIndex}].kind {device.kind}" );
+                Debug.Log($"devices[{cameraIndex}].depthCameraName {device.depthCameraName}" );
+                
                 if (device.isFrontFacing)
                     continue;
-                webCamTexture = new WebCamTexture(device.name, requestedWidth, requestedHeight, requestedFPS);
-                webCamTexture.Play();
-                yield return new WaitUntil(() => webCamTexture.didUpdateThisFrame);
-
-                OnInitialized?.Invoke();
+                deviceName = device.name;
                 break;
             }
 
-            if (webCamTexture is not null)
-                yield break;
-            if (devices.Length <= 0)
-                yield break;
-            var deviceIndex = devices.Length > 1 ? 1 : 0;
-            webCamTexture = new WebCamTexture(devices[deviceIndex].name, requestedWidth, requestedHeight, requestedFPS);
+            if (string.IsNullOrEmpty(deviceName)) {
+                var wideCam = devices.FirstOrDefault(d => d.name.Contains("Задняя двойная широкоугольная камера")).name;
+                if (string.IsNullOrEmpty(wideCam))
+                    deviceName = devices[devices.Length > 1 ? 1 : 0].name;
+                else
+                    deviceName = wideCam;
+            }
+                
+             
+            yield return StartCamera(deviceName);
+        }
+
+        private IEnumerator StartCamera(string deviceName)
+        {
+            webCamTexture = new WebCamTexture(deviceName, requestedWidth, requestedHeight, requestedFPS);
             webCamTexture.Play();
             yield return new WaitUntil(() => webCamTexture.didUpdateThisFrame);
             OnInitialized?.Invoke();
