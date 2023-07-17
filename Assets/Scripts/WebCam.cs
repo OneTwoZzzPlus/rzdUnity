@@ -9,7 +9,6 @@ namespace DefaultNamespace
     {
         public Action OnInitialized { get; set; }
 
-        private Texture2D texture;
         private WebCamTexture webCamTexture;
         private IEnumerator initCoroutine;
 
@@ -49,9 +48,8 @@ namespace DefaultNamespace
             Debug.Log($"Height: {height}");
 
 
-            texture = new Texture2D(width, height, TextureFormat.RGBA32, false);
             var plane = gameObject.GetComponentInChildren<Renderer>();
-            plane.material.mainTexture = texture;
+            plane.material.mainTexture = webCamTexture;
             plane.transform.localScale = new Vector3(width, height, 1);
 
             var widthScale = (float)Screen.width / width;
@@ -66,15 +64,6 @@ namespace DefaultNamespace
                 if (Camera.main != null)
                     Camera.main.orthographicSize = height / 2;
             }
-        }
-
-        private void Update()
-        {
-            if (!texture || !webCamTexture || !webCamTexture.isPlaying || !webCamTexture.didUpdateThisFrame)
-                return;
-
-            texture.SetPixels(webCamTexture.GetPixels());
-            texture.Apply();
         }
 
         private void OnDestroy()
