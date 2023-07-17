@@ -16,7 +16,7 @@ namespace DefaultNamespace
         [SerializeField] private WindowController windowController;
         [SerializeField] private SignDataRegistry signDataRegistry;
 
-        private TargetModel targetModel = new TargetModel();
+        private readonly TargetModel targetModel = new();
 
         public IWindowController WindowController => windowController;
 #if UNITY_EDITOR
@@ -27,6 +27,8 @@ namespace DefaultNamespace
   
         private ViewStateMachine viewStateMachine;
         public IStateMachine<ViewState> StateMachine => viewStateMachine;
+
+        private SignInventory signInventory;
 
         private void Awake()
         {
@@ -41,11 +43,20 @@ namespace DefaultNamespace
 
         private void Start()
         {
+            var signFactory = new SignModel.Factory();
+            signInventory = new SignInventory(signFactory);
+
+            foreach (var signData in signDataRegistry.GetAll())
+            {
+                var model = signInventory.CreateModel(signData);
+                model?.Load();
+            }
+
             viewStateMachine = new ViewStateMachine();
             viewStateMachine.Initialize(new IState<ViewState>[] {
-                    new ARState(webCam, TargetTracker, signDataRegistry, windowController, targetModel, viewStateMachine),
-                    new LibraryState(signDataRegistry,windowController, targetModel, viewStateMachine),
-                    new InfoState(signDataRegistry,windowController, targetModel, viewStateMachine) 
+                    new ARState(webCam, TargetTracker, signInventory, windowController, targetModel, viewStateMachine),
+                    new LibraryState(signInventory,windowController, targetModel, viewStateMachine),
+                    new InfoState(signInventory,windowController, targetModel, viewStateMachine) 
             }, ViewState.AR);
         }
     }

@@ -8,7 +8,7 @@ namespace View
 {
     public class InfoState : IState<ViewState>
     {
-        private readonly IRegistry<SignData> signDataRegistry;
+        private readonly SignInventory signInventory;
         private readonly IWindowController windowController;
         private readonly TargetModel targetModel;
         private readonly IStateMachine<ViewState> viewStateMachine;
@@ -17,12 +17,12 @@ namespace View
 
         public ViewState Id => ViewState.Info;
 
-        public InfoState(SignDataRegistry signDataRegistry, 
+        public InfoState(SignInventory signInventory, 
                          WindowController windowController, 
                          TargetModel targetModel, 
                          ViewStateMachine viewStateMachine)
         {
-            this.signDataRegistry = signDataRegistry;
+            this.signInventory = signInventory;
             this.windowController = windowController;
             this.targetModel = targetModel;
             this.viewStateMachine = viewStateMachine;
@@ -36,13 +36,14 @@ namespace View
             signInfoWindow.BackButtonClicked += BackButtonClickHandler;
             windowController.ShowWindow(typeof(SignInfoWindow));
 
-            var signData = signDataRegistry.Get(targetModel.Id);
-            if (signData)
+            var signModel = signInventory.GetModel(targetModel.Id);
+            if (signModel is {})
             {
-                signInfoWindow.SetSignName(signData.Name);
-                signInfoWindow.SetSignNumber(signData.Number);
-                signInfoWindow.SetSignDescription(signData.Description);
-                signInfoWindow.SetImage(signData.Sprite);
+                signInfoWindow.SetSignName(signModel.Name);
+                signInfoWindow.SetSignNumber(signModel.Number);
+                signInfoWindow.SetSignDescription(signModel.Description);
+                signInfoWindow.SetImage(signModel.Sprite);
+                signInfoWindow.SetFound(signModel.IsFound, signModel.FoundTime);
             }
                 
         }
