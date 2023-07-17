@@ -7,6 +7,62 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1151086709344647970, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3e105a7de7b919f4ea382e77207619d1, type: 3}
+    - target: {fileID: 1266476368782362450, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266476368782362450, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 3055163768488723659, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_fontSize
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 3055163768488723659, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c0ee8f216045f8c4ebd0a3fed25b61f9, type: 2}
+    - target: {fileID: 3055163768488723659, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_wordSpacing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3055163768488723659, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 3055163768488723659, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -4823373757738115287, guid: c0ee8f216045f8c4ebd0a3fed25b61f9, type: 2}
+    - target: {fileID: 3055163768488723659, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_characterSpacing
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3055163768488723659, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084235816198276264, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084235816198276264, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 60be7e06298f6f74da5f331ba009fb3a, type: 3}
+    - target: {fileID: 7139863537286005520, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7139863537286005520, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -40
+      objectReference: {fileID: 0}
     - target: {fileID: 7457513842765330789, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
       propertyPath: m_Name
       value: VerticalSignInfo
@@ -41,11 +97,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8204414467224540406, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 360
+      value: 460
       objectReference: {fileID: 0}
     - target: {fileID: 8204414467224540406, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 600
+      value: 675
       objectReference: {fileID: 0}
     - target: {fileID: 8204414467224540406, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -97,3 +153,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+--- !u!1 &3105821866581985295 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1189466449363649742, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
+  m_PrefabInstance: {fileID: 4295253062854003905}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4885920989939384725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3105821866581985295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
