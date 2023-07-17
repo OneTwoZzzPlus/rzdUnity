@@ -2,6 +2,7 @@ using Data;
 using DefaultNamespace;
 using Interfaces;
 using Model;
+using System;
 
 namespace View
 {
@@ -28,6 +29,20 @@ namespace View
             this.viewStateMachine = viewStateMachine;
         }
 
+        public void CheckSecret(SignModel signModel)
+        {
+            for (int id = 0; id < 26; id++)
+            {
+                var sign = signInventory.GetModel(id);
+                if (sign == null || !sign.IsFound)
+                {
+                    libraryWindow.SetSecret(signModel.Id);
+                    return;
+                }
+            }
+            libraryWindow.SetUnsecret(signModel.Id, signModel.Sprite);
+        }
+
         public void Enter()
         {
             libraryWindow = windowController.ShowWindow(typeof(LibraryWindow)) as LibraryWindow;
@@ -35,10 +50,12 @@ namespace View
             libraryWindow.SignButtonClicked += SignButtonClickHandler;
 
             foreach (var signModel in signInventory.GetAll())
-            {
+            { 
                 libraryWindow.CreateSign(signModel.Id, signModel.Sprite);
                 libraryWindow.SetSignFound(signModel.Id, signModel.IsFound, signModel.FoundTime);
+                
             }
+            CheckSecret(signInventory.GetModel(32));
         }
 
         public void Exit()

@@ -17,8 +17,7 @@ namespace Model
         {
             get => DateTime.FromFileTimeUtc(foundTime);
             set => foundTime = value.ToFileTimeUtc();
-        }
-        
+        }        
 
         [NonSerialized]
         private readonly SignData signData;
