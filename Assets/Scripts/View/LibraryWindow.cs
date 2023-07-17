@@ -122,7 +122,7 @@ public class LibraryWindow : BaseWindow
 
     private bool IsVertical(Sprite sprite)
     {
-        return sprite.texture.height > sprite.texture.width;
+        return sprite.rect.height > sprite.rect.width;
     }
 
 }
