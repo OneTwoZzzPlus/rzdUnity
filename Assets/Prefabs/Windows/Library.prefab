@@ -299,6 +299,7 @@ MonoBehaviour:
   horizontalSignPrefab: {fileID: 6247743347055657075, guid: e561300e3fc1ede4cbd8ca40f7b473dc, type: 3}
   libraryPanelPrefab: {fileID: 6163109110495584728, guid: cbd0213fecf40dc40b7cfe917a0d1ac5, type: 3}
   contentParent: {fileID: 686041825551077343}
+  secretSprite: {fileID: 21300000, guid: 4a73e5a8af155c04ca2e9d828f1aacb1, type: 3}
 --- !u!1 &686041825551077340
 GameObject:
   m_ObjectHideFlags: 0

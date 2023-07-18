@@ -6,9 +6,9 @@ namespace DefaultNamespace
 {
     public class TrackableExample : MonoBehaviour
     {
-        [SerializeField] private WebCam webCam;
         [SerializeField] private GameObject arObjectPrefab;
         [SerializeField] private Transform trackableAnchor;
+        [SerializeField] private int targetId = 32;
 
         private GameObject arObject;
         private ITargetTracker targetTracker;
@@ -18,31 +18,22 @@ namespace DefaultNamespace
 
             targetTracker = RootController.Instance.TargetTracker;
 
-            if (webCam)
-            {
-                webCam.OnInitialized += OnWebcamInitialized;
-                webCam.Initiate();
-            }
-
             targetTracker.TargetDetected += TargetDetectedHandler;
             targetTracker.TargetComputed += TargetComputedHandler;
             targetTracker.TargetLost += TargetLostHandler;
         }
 
-        private void OnWebcamInitialized()
-        {
-            WebGLBridge.EngineStarted();
-        }
-
         private void TargetDetectedHandler(int index)
         {
-            Debug.Log("Detected " + index);
-            if (arObjectPrefab)
+            if (index == targetId && arObjectPrefab)
                 arObject = Instantiate(arObjectPrefab, trackableAnchor);
         }
 
         private void TargetComputedHandler(int index, Matrix4x4 matrix)
         {
+            if (index != targetId)
+                return;
+
             matrix = matrix.HouseholderReflection(Vector3.forward);
             matrix = matrix.MultiplyByNumber(.5f);
 
@@ -51,16 +42,15 @@ namespace DefaultNamespace
 
         private void TargetLostHandler(int index)
         {
-            Debug.Log("Lost " + index);
-            if (arObject)
+            if (index == targetId && arObject)
                 Destroy(arObject);
         }
 
         private void OnDestroy()
         {
-            WebGLBridge.OnExternalDetect -= TargetDetectedHandler;
-            WebGLBridge.OnExternalCompute -= TargetComputedHandler;
-            WebGLBridge.OnExternalLost -= TargetLostHandler;
+            targetTracker.TargetDetected -= TargetDetectedHandler;
+            targetTracker.TargetComputed -= TargetComputedHandler;
+            targetTracker.TargetLost -= TargetLostHandler;
         }
     }
 }

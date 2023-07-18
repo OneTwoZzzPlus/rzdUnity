@@ -8,7 +8,6 @@ using View;
 public class LibraryWindow : BaseWindow
 {
     public event Action ARButtonClicked;
-    public event Action RewindButtonClicked;
     public event Action<int> SignButtonClicked;
 
     [SerializeField] private Button ARButton;
@@ -19,6 +18,9 @@ public class LibraryWindow : BaseWindow
     [SerializeField] private SignView horizontalSignPrefab;
     [SerializeField] private GameObject libraryPanelPrefab;
     [SerializeField] private Transform contentParent;
+
+    [SerializeField] private Sprite secretSprite;
+    
 
     private Dictionary<int, SignView> signViews = new();
     private Coroutine scrollCoroutine;
@@ -58,6 +60,24 @@ public class LibraryWindow : BaseWindow
     {
         if (isFound && signViews.TryGetValue(id, out var view))
             view.SetFound(time);
+    }
+
+    public void SetSecret(int id)
+    {
+        if (signViews.TryGetValue(id, out var view))
+        {
+            view.SetSprite(secretSprite);
+            view.gameObject.GetComponent<Button>().enabled = false;
+        }
+    }
+
+    public void SetUnsecret(int id, Sprite sprite)
+    {
+        if (signViews.TryGetValue(id, out var view))
+        {
+            view.SetSprite(sprite);
+            view.gameObject.GetComponent<Button>().enabled = true;
+        }
     }
 
     public void CreateSign(int id, Sprite sprite)
