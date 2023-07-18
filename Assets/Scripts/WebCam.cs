@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace DefaultNamespace
 {
@@ -28,8 +27,8 @@ namespace DefaultNamespace
 
         private void Start()
         {
-            requestedHeight = Screen.height;
-            requestedWidth = Screen.width;
+            requestedHeight = Display.displays[0].systemHeight;
+            requestedWidth = Display.displays[0].systemWidth;
         }
 
         private void OnWebCamTextureToMatHelperInitialized()
@@ -113,7 +112,6 @@ namespace DefaultNamespace
             {
                 Debug.Log("Webcam start found");
 
-                int maxRes = 0, maxResCameraIndex = 0;
                 for (var camIndex = 0; camIndex < devices.Length; camIndex++)
                 {
                     var device = devices[camIndex];
@@ -121,22 +119,12 @@ namespace DefaultNamespace
                     Debug.Log($"Device {camIndex}\nname:{device.name}\nisFrontFacing: {device.isFrontFacing}" +
                               $"\nkind {device.kind}\ndepthCameraName {device.depthCameraName}");
 
-                    if (device.availableResolutions == null)
-                    {
-                        Debug.Log($"Null resolutions in camera {camIndex}");
+                    if (device.isFrontFacing)
                         continue;
-                    }
-                    int camMaxRes = (device.availableResolutions.Max(r => r.height * r.width));
-
-                    if (maxRes < camMaxRes)
-                    {
-                        maxRes = camMaxRes;
-                        maxResCameraIndex = camIndex;
-                    }
+                    deviceName = device.name;
+                    cameraIndex = camIndex;
+                    break;
                 }
-
-                deviceName = devices[maxResCameraIndex].name;
-                cameraIndex = maxResCameraIndex;
             }
 
             if (string.IsNullOrEmpty(deviceName)) {
@@ -150,6 +138,7 @@ namespace DefaultNamespace
             
             yield return StartCamera(deviceName);
         }
+            
 
         private IEnumerator StartCamera(string deviceName)
         {

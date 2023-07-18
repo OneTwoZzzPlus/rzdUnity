@@ -2,13 +2,11 @@ using Data;
 using DefaultNamespace;
 using Interfaces;
 using Model;
-using System;
 
 namespace View
 {
     public class LibraryState : IState<ViewState>
     {
-
         private readonly IWindowController windowController;
         private readonly TargetModel targetModel;
         private readonly IStateMachine<ViewState> viewStateMachine;
@@ -31,13 +29,16 @@ namespace View
 
         public void CheckSecret(SignModel signModel)
         {
-            for (int id = 0; id < 26; id++)
+            if (!signModel.IsFound)
             {
-                var sign = signInventory.GetModel(id);
-                if (sign == null || !sign.IsFound)
+                for (int id = 0; id < 26; id++)
                 {
-                    libraryWindow.SetSecret(signModel.Id);
-                    return;
+                    var sign = signInventory.GetModel(id);
+                    if (sign == null || !sign.IsFound)
+                    {
+                        libraryWindow.SetSecret(signModel.Id);
+                        return;
+                    }
                 }
             }
             libraryWindow.SetUnsecret(signModel.Id, signModel.Sprite);
