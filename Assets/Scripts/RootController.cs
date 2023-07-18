@@ -15,6 +15,7 @@ namespace DefaultNamespace
         [SerializeField] private RealTargetTracker realTargetTracker;
         [SerializeField] private WindowController windowController;
         [SerializeField] private SignDataRegistry signDataRegistry;
+        [SerializeField] private HedgehogView hedgehogView;
 
         private readonly TargetModel targetModel = new();
 
@@ -54,7 +55,7 @@ namespace DefaultNamespace
 
             viewStateMachine = new ViewStateMachine();
             viewStateMachine.Initialize(new IState<ViewState>[] {
-                    new ARState(webCam, TargetTracker, signInventory, windowController, targetModel, viewStateMachine),
+                    new ARState(webCam, TargetTracker, signInventory, windowController, targetModel, viewStateMachine, hedgehogView),
                     new LibraryState(signInventory,windowController, targetModel, viewStateMachine),
                     new InfoState(signInventory,windowController, targetModel, viewStateMachine) 
             }, ViewState.AR);

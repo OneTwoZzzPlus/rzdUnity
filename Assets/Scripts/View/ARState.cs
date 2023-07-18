@@ -4,32 +4,37 @@ using System;
 using UnityEngine.Assertions;
 using Data;
 using Model;
+using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 namespace View
 {
     public class ARState : IState<ViewState>
     {
-
         private readonly ITargetTracker targetTracker;
         private readonly SignInventory signInventory;
         private readonly IWindowController windowController;
         private readonly TargetModel targetModel;
         private readonly IStateMachine<ViewState> viewStateMachine;
+        private readonly HedgehogView hedgehogView;
         private ARWindow arWindow;
 
+        private int hedgehogId = 32;
+        
         public ARState(WebCam webCam, 
                        ITargetTracker targetTracker,
                        SignInventory signInventory, 
                        WindowController windowController, 
                        TargetModel targetModel, 
-                       ViewStateMachine viewStateMachine)
+                       ViewStateMachine viewStateMachine,
+                       HedgehogView hedgehogView)
         {
             this.targetTracker = targetTracker;
             this.signInventory = signInventory;
             this.windowController = windowController;
             this.targetModel = targetModel;
             this.viewStateMachine = viewStateMachine;
+            this.hedgehogView = hedgehogView;
             if (webCam)
             {
                 webCam.OnInitialized += OnWebcamInitialized;
@@ -54,13 +59,22 @@ namespace View
             arWindow.SignButtonClicked += SignButtonClickHandler;
 
             targetTracker.TargetDetected += TargetDetectedHandler;
+            targetTracker.TargetComputed += TargetComputedHandler;
             targetTracker.TargetLost += TargetLostHandler;
+        }
+
+        private void TargetComputedHandler(int targetId, Matrix4x4 matrix)
+        {
+            if (targetId == hedgehogId) {
+                hedgehogView.Move(matrix);
+            }
         }
 
         public void Exit()
         { 
             targetTracker.TargetDetected -= TargetDetectedHandler;
             targetTracker.TargetLost -= TargetLostHandler;
+            targetTracker.TargetComputed -= TargetComputedHandler;
             windowController.HideWindow(typeof(ARWindow));
         }
 
@@ -89,13 +103,19 @@ namespace View
                 signModel.IsFound = true;
                 signModel.FoundTime = DateTime.Now;
                 signModel.Save();
+            }
 
+            if (targetId == hedgehogId) {
+                hedgehogView.Show();
             }
         }
 
         private void TargetLostHandler(int targetId)
         {
             arWindow.HideSignButton();
+            if (targetId == hedgehogId) {
+                hedgehogView.Hide();
+            }
         }
     }
 }
