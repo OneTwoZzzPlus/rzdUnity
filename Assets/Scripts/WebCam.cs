@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace DefaultNamespace
 {
@@ -16,26 +16,20 @@ namespace DefaultNamespace
         private int requestedWidth = 480;
         private int requestedHeight = 640;
         [SerializeField] private int requestedFPS = 30;
-        [SerializeField] private bool staticCameraIndex = false;
-       
-        [SerializeField][Range(0, 6)] private int requestedCameraIndex = 0;
+        
+        private bool staticCameraIndex = false;
+        private int cameraIndex = 0;
+        private int maxCameraIndex = 0;
+
+        private void Awake()
+        {
+            OnInitialized += OnWebCamTextureToMatHelperInitialized;
+        }
+
         private void Start()
         {
             requestedHeight = Screen.height;
             requestedWidth = Screen.width;
-        }
-
-        public void Initiate()
-        {
-            if (initCoroutine is { })
-            {
-                StopCoroutine(initCoroutine);
-                initCoroutine = null;
-            }
-
-            OnInitialized += OnWebCamTextureToMatHelperInitialized;
-            initCoroutine = InitiateCoroutine();
-            StartCoroutine(initCoroutine);
         }
 
         private void OnWebCamTextureToMatHelperInitialized()
@@ -71,6 +65,33 @@ namespace DefaultNamespace
         {
             if (webCamTexture)
                 webCamTexture.Stop();
+            OnInitialized -= OnWebCamTextureToMatHelperInitialized;
+        }
+
+        public void switchCamera()
+        {
+            if (webCamTexture)
+                webCamTexture.Stop();
+
+            cameraIndex = cameraIndex >= maxCameraIndex ? 0 : cameraIndex + 1;
+            staticCameraIndex = true;
+            Debug.Log($"Switch camera to {cameraIndex}");
+            
+            Initiate();
+        }
+
+
+
+        public void Initiate()
+        {
+            if (initCoroutine is { })
+            {
+                StopCoroutine(initCoroutine);
+                initCoroutine = null;
+            }
+
+            initCoroutine = InitiateCoroutine();
+            StartCoroutine(initCoroutine);
         }
 
         private IEnumerator InitiateCoroutine()
@@ -82,36 +103,38 @@ namespace DefaultNamespace
             }
 
             var devices = WebCamTexture.devices;
-            Debug.Log("webcam start found");
+            maxCameraIndex = devices.Length - 1;
             var deviceName = string.Empty;
-            
+
             if (staticCameraIndex) {
-                deviceName = devices[requestedCameraIndex].name;
+                deviceName = devices[cameraIndex].name;
             }
 
-            for (var cameraIndex = 0; cameraIndex < devices.Length; cameraIndex++)
+            Debug.Log("Webcam start found");
+            for (var camIndex = 0; camIndex < devices.Length; camIndex++)
             {
-                var device = devices[cameraIndex];
-                Debug.Log($"devices[{cameraIndex}].name: {device.name}");
-                Debug.Log($"devices[{cameraIndex}].isFrontFacing: {device.isFrontFacing}");
-                Debug.Log($"devices[{cameraIndex}].kind {device.kind}" );
-                Debug.Log($"devices[{cameraIndex}].depthCameraName {device.depthCameraName}" );
+                var device = devices[camIndex];
+                Debug.Log($"devices[{camIndex}].name: {device.name}");
+                Debug.Log($"devices[{camIndex}].isFrontFacing: {device.isFrontFacing}");
+                Debug.Log($"devices[{camIndex}].kind {device.kind}" );
+                Debug.Log($"devices[{camIndex}].depthCameraName {device.depthCameraName}" );
                 
                 if (device.isFrontFacing)
                     continue;
                 deviceName = device.name;
+                cameraIndex = camIndex;
                 break;
             }
 
             if (string.IsNullOrEmpty(deviceName)) {
-                var wideCam = devices.FirstOrDefault(d => d.name.Contains("Задняя двойная широкоугольная камера")).name;
-                if (string.IsNullOrEmpty(wideCam))
+                var wideCam = devices.FirstOrDefault(d => d.name.Contains("Задняя двойная широкоугольная камера"));
+                if (string.IsNullOrEmpty(wideCam.name))
                     deviceName = devices[devices.Length > 1 ? 1 : 0].name;
                 else
-                    deviceName = wideCam;
+                    deviceName = wideCam.name;
+                cameraIndex = devices.ToList().IndexOf(wideCam);
             }
-                
-             
+            
             yield return StartCamera(deviceName);
         }
 

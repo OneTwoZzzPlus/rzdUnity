@@ -2,15 +2,13 @@ using DefaultNamespace;
 using Interfaces;
 using System;
 using UnityEngine.Assertions;
-using Data;
 using Model;
-using static UnityEngine.GraphicsBuffer;
 
 namespace View
 {
     public class ARState : IState<ViewState>
     {
-
+        private readonly WebCam webCam;
         private readonly ITargetTracker targetTracker;
         private readonly SignInventory signInventory;
         private readonly IWindowController windowController;
@@ -25,6 +23,7 @@ namespace View
                        TargetModel targetModel, 
                        ViewStateMachine viewStateMachine)
         {
+            this.webCam = webCam;
             this.targetTracker = targetTracker;
             this.signInventory = signInventory;
             this.windowController = windowController;
@@ -40,6 +39,7 @@ namespace View
         private void OnWebcamInitialized()
         {
             WebGLBridge.EngineStarted();
+            arWindow.SetActiveCamSwitchButton(true);
         }
 
         public ViewState Id => ViewState.AR;
@@ -52,6 +52,7 @@ namespace View
 
             arWindow.LibraryButtonClicked += LibraryButtonClickHandler;
             arWindow.SignButtonClicked += SignButtonClickHandler;
+            arWindow.CamSwitchButtonClicked += CamSwitchButtonClickHandler;
 
             targetTracker.TargetDetected += TargetDetectedHandler;
             targetTracker.TargetLost += TargetLostHandler;
@@ -72,6 +73,12 @@ namespace View
         private void LibraryButtonClickHandler()
         {
             viewStateMachine.ChangeState(ViewState.Library);
+        }
+
+        private void CamSwitchButtonClickHandler()
+        {
+            arWindow.SetActiveCamSwitchButton(false);
+            webCam.switchCamera();
         }
 
         private void TargetDetectedHandler(int targetId)

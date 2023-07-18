@@ -9,9 +9,11 @@ public class ARWindow : BaseWindow
 {
     public event Action LibraryButtonClicked;
     public event Action SignButtonClicked;
+    public event Action CamSwitchButtonClicked;
 
     [SerializeField] private Button libraryButton;
     [SerializeField] private Button signButton;
+    [SerializeField] private Button camSwitchButton;
     [SerializeField] private TextMeshProUGUI signNumberText;
     [SerializeField] private TextMeshProUGUI signNameText;
     [SerializeField] private float delay = 2f;
@@ -23,6 +25,7 @@ public class ARWindow : BaseWindow
     {
         libraryButton.onClick.AddListener(() => LibraryButtonClicked?.Invoke());
         signButton.onClick.AddListener(() => SignButtonClicked?.Invoke());
+        camSwitchButton.onClick.AddListener(() => CamSwitchButtonClicked?.Invoke());
     }
 
     private void Start()
@@ -35,6 +38,11 @@ public class ARWindow : BaseWindow
         StopAllCoroutines();
         signButton.gameObject.SetActive(false);
         base.Hide();
+    }
+
+    public void SetActiveCamSwitchButton(bool isActive)
+    {
+        camSwitchButton.interactable = isActive;
     }
 
     public void SetSignNumber(string signNumber)
