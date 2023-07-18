@@ -18,7 +18,7 @@ namespace DefaultNamespace
         [SerializeField] private int requestedFPS = 30;
         
         private bool staticCameraIndex = false;
-        private int cameraIndex = 0;
+        [SerializeField] private int cameraIndex = 0;
         private int maxCameraIndex = 0;
 
         private void Awake()
@@ -39,8 +39,7 @@ namespace DefaultNamespace
             var width = webCamTexture.width;
             var height = webCamTexture.height;
 
-            Debug.Log($"Width: {width}");
-            Debug.Log($"Height: {height}");
+            Debug.Log($"Width: {width}\tHeight: {height}");
 
 
             var plane = gameObject.GetComponentInChildren<Renderer>();
@@ -106,24 +105,38 @@ namespace DefaultNamespace
             maxCameraIndex = devices.Length - 1;
             var deviceName = string.Empty;
 
-            if (staticCameraIndex) {
+            if (staticCameraIndex)
+            {
                 deviceName = devices[cameraIndex].name;
             }
-
-            Debug.Log("Webcam start found");
-            for (var camIndex = 0; camIndex < devices.Length; camIndex++)
+            else
             {
-                var device = devices[camIndex];
-                Debug.Log($"devices[{camIndex}].name: {device.name}");
-                Debug.Log($"devices[{camIndex}].isFrontFacing: {device.isFrontFacing}");
-                Debug.Log($"devices[{camIndex}].kind {device.kind}" );
-                Debug.Log($"devices[{camIndex}].depthCameraName {device.depthCameraName}" );
-                
-                if (device.isFrontFacing)
-                    continue;
-                deviceName = device.name;
-                cameraIndex = camIndex;
-                break;
+                Debug.Log("Webcam start found");
+
+                int maxRes = 0, maxResCameraIndex = 0;
+                for (var camIndex = 0; camIndex < devices.Length; camIndex++)
+                {
+                    var device = devices[camIndex];
+
+                    Debug.Log($"Device {camIndex}\nname:{device.name}\nisFrontFacing: {device.isFrontFacing}" +
+                              $"\nkind {device.kind}\ndepthCameraName {device.depthCameraName}");
+
+                    if (device.availableResolutions == null)
+                    {
+                        Debug.Log($"Null resolutions in camera {camIndex}");
+                        continue;
+                    }
+                    int camMaxRes = (device.availableResolutions.Max(r => r.height * r.width));
+
+                    if (maxRes < camMaxRes)
+                    {
+                        maxRes = camMaxRes;
+                        maxResCameraIndex = camIndex;
+                    }
+                }
+
+                deviceName = devices[maxResCameraIndex].name;
+                cameraIndex = maxResCameraIndex;
             }
 
             if (string.IsNullOrEmpty(deviceName)) {

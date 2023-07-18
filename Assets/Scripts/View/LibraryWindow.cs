@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using View;
@@ -9,7 +8,6 @@ using View;
 public class LibraryWindow : BaseWindow
 {
     public event Action ARButtonClicked;
-    public event Action RewindButtonClicked;
     public event Action<int> SignButtonClicked;
 
     [SerializeField] private Button ARButton;
