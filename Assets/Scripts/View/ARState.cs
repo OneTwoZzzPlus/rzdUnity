@@ -104,7 +104,7 @@ namespace View
         {
             targetModel.Id = targetId;
             var signModel = signInventory.GetModel(targetId);
-            if (signModel is {})
+            if (signModel is {} && !signModel.IsLocked)
             {
                 arWindow.ShowSignButton();
                 arWindow.SetSignNumber(signModel.Number);
@@ -117,8 +117,8 @@ namespace View
                     UpdateModelsLock();
 
                 }
-                if(!signModel.IsLocked)
-                    arView.Show(signModel.ArObject);
+
+                arView.Show(signModel.ArObject);
                     
             }
         }

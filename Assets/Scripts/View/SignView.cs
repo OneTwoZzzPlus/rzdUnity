@@ -24,7 +24,8 @@ namespace View
 
         public void SetSprite(Sprite sprite)
         {
-            signImage.sprite = sprite;
+            if (signImage.sprite != sprite)
+                signImage.sprite = sprite;
         }
 
         public void SetText(string text)
@@ -38,6 +39,9 @@ namespace View
             foundFrame.SetActive(true);
             foundText.text = $"Обнаружен {time.Date.ToShortDateString()}";
         }
+
+        public bool Interactable { get => button.interactable; 
+                                   set => button.interactable = value; } 
 
     }
 }

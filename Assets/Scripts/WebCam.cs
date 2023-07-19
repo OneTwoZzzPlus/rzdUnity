@@ -14,10 +14,6 @@ namespace DefaultNamespace
 
         // Cache devices
         private WebCamDevice[] devices;
-
-        private int requestedWidth = 480;
-        private int requestedHeight = 640;
-        [SerializeField] private int requestedFPS = 30;
         
         private bool staticCameraIndex = false;
         [SerializeField] private int cameraIndex = 0;
@@ -25,12 +21,6 @@ namespace DefaultNamespace
         private void Awake()
         {
             OnInitialized += OnWebCamTextureToMatHelperInitialized;
-        }
-
-        private void Start()
-        {
-            requestedHeight = Display.displays[0].systemHeight;
-            requestedWidth = Display.displays[0].systemWidth;
         }
 
         private void OnWebCamTextureToMatHelperInitialized()
