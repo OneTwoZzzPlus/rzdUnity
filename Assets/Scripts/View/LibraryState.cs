@@ -27,14 +27,6 @@ namespace View
             this.viewStateMachine = viewStateMachine;
         }
 
-        public void CheckSecret(SignModel signModel)
-        {
-            if (signModel.IsLocked)
-                libraryWindow.SetSecret(signModel.Id);
-            else
-                libraryWindow.SetUnsecret(signModel.Id, signModel.Sprite);
-        }
-
         public void Enter()
         {
             libraryWindow = windowController.ShowWindow(typeof(LibraryWindow)) as LibraryWindow;
@@ -43,10 +35,9 @@ namespace View
 
             foreach (var signModel in signInventory.GetAll())
             { 
-                libraryWindow.CreateSign(signModel.Id, signModel.Sprite, signModel.IsLocked);
+                libraryWindow.UpdateSign(signModel.Id, signModel.Sprite, signModel.IsLocked);
                 libraryWindow.SetSignFound(signModel.Id, signModel.IsFound, signModel.FoundTime);
             }
-            CheckSecret(signInventory.GetModel(32));
         }
 
         public void Exit()

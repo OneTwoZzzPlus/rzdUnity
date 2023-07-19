@@ -41,7 +41,7 @@ namespace View
         }
 
         public bool Interactable { get => button.interactable; 
-                                   set => button.interactable = value; } 
-
+            set => button.interactable = value; } 
+        
     }
 }

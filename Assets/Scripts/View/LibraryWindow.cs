@@ -62,56 +62,42 @@ public class LibraryWindow : BaseWindow
             view.SetFound(time);
     }
 
-    public void SetSecret(int id)
-    {
-        if (signViews.TryGetValue(id, out var view))
-        {
-            view.SetSprite(secretSprite);
-            view.gameObject.GetComponent<Button>().enabled = false;
-        }
-    }
-
-    public void SetUnsecret(int id, Sprite sprite)
-    {
-        if (signViews.TryGetValue(id, out var view))
-        {
-            view.SetSprite(sprite);
-            view.gameObject.GetComponent<Button>().enabled = true;
-        }
-    }
-
-    public void CreateSign(int id, Sprite sprite, bool isLocked)
+    public void UpdateSign(int id, Sprite sprite, bool isLocked)
     {
         SignView sign;
-        if (!signViews.TryGetValue(id, out sign))
-        {
-            var prefab = IsVertical(sprite) ? verticalSignPrefab : horizontalSignPrefab;
-            var panel = GetOrCreatePanel(sprite);
-
-            if (panel is null)
-            {
-                Debug.LogError("Panel object isn't create");
-                return;
-            }
-
-            sign = Instantiate(prefab, panel);
-
-            if (sign is null)
-            {
-                Debug.LogError("Sign object isn't create");
-                return;
-            }
-
-            if (signViews.ContainsKey(id))
-                Debug.LogError($"Dictionary alredy contains sign with id {id}");
-            else
-                signViews.Add(id, sign);
-
-            sign.ButtonClicked += SignButtonClickHandler(id);
-            
+        if (!signViews.TryGetValue(id, out sign)) {
+            sign = CreateSign(id, sprite);
         }
         sign.SetSprite(isLocked ? secretSprite : sprite);
         sign.Interactable = !isLocked;
+    }
+
+    private SignView CreateSign(int id, Sprite sprite)
+    {
+        var prefab = IsVertical(sprite) ? verticalSignPrefab : horizontalSignPrefab;
+        var panel = GetOrCreatePanel(sprite);
+
+        if (panel is null)
+        {
+            Debug.LogError("Panel object isn't create");
+            return null;
+        }
+
+        var sign = Instantiate(prefab, panel);
+
+        if (sign is null)
+        {
+            Debug.LogError("Sign object isn't create");
+            return null;
+        }
+
+        if (signViews.ContainsKey(id))
+            Debug.LogError($"Dictionary alredy contains sign with id {id}");
+        else
+            signViews.Add(id, sign);
+
+        sign.ButtonClicked += SignButtonClickHandler(id);
+        return sign;
     }
 
     private Action SignButtonClickHandler(int id) => () => SignButtonClicked?.Invoke(id);
