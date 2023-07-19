@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Data
@@ -12,5 +14,17 @@ namespace Data
         public string Number;
         [Multiline(10)] public string Description;
 
+        public List<SignData> SignsForUnlock;
+        public GameObject ArObject;
+        
+        public bool GetLocked(IEnumerable<int> foundIds)
+        {
+            if (SignsForUnlock.Count == 0)
+                return false;
+            var unlockIds = SignsForUnlock.Select(s => s.Id);
+            
+            
+            return !unlockIds.All(i => foundIds.Contains(i));
+        }
     }
 }
