@@ -12,14 +12,18 @@ namespace View
 
         public void Show(GameObject arObjectPrefab)
         {
-            if (arObjectPrefab)
-                arObject = Instantiate(arObjectPrefab, trackableAnchor);
+            if (arObjectPrefab is null)
+                return;
+            arObject = Instantiate(arObjectPrefab, trackableAnchor);
         }
         
         public void Hide()
         {
-            if (arObject)
-                Destroy(arObject);
+            if (arObject is null)
+                return;
+            Destroy(arObject);
+            arObject = null;
+
         }
         
         public void Move(Matrix4x4 matrix)
