@@ -83,6 +83,7 @@ public class FakeTargetTracker : MonoBehaviour, ITargetTracker
         if (Input.GetKeyUp(KeyCode.X)) InvokeTargetLost(30);
         if (Input.GetKeyUp(KeyCode.C)) InvokeTargetLost(31);
         if (Input.GetKeyUp(KeyCode.V)) InvokeTargetLost(32);
+        if (Input.GetKeyDown(KeyCode.B)) InvokeTargetCompute(32, new Matrix4x4());
     }
 
     private void InvokeTargetDetect(int targetIndex) 

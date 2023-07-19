@@ -142,7 +142,7 @@ namespace DefaultNamespace
 
         private IEnumerator StartCamera(string deviceName)
         {
-            webCamTexture = new WebCamTexture(deviceName, requestedWidth, requestedHeight, requestedFPS);
+            webCamTexture = new WebCamTexture(deviceName);
             webCamTexture.Play();
             yield return new WaitUntil(() => webCamTexture.didUpdateThisFrame);
             OnInitialized?.Invoke();

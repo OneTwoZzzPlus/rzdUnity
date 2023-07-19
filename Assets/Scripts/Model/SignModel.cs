@@ -1,6 +1,8 @@
 using Data;
 using Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,7 +13,30 @@ namespace Model
     [Serializable]
     public class SignModel: IModel
     {
-        public bool IsFound;
+        [SerializeField]
+        private bool isFound;
+
+        public bool IsFound {
+            get => isFound;
+            set {
+                isFound = value;
+            }
+        }
+
+        [SerializeField]
+        private bool isLocked;
+        
+        public bool IsLocked {
+            get => isLocked;
+        }
+
+        public void UpdateLockedStatus(IEnumerable<int> foundIds)
+        {
+            isLocked = signData.GetLocked(foundIds);
+        }
+        
+        public GameObject ArObject => signData.ArObject;
+        
         [SerializeField] private long foundTime;
         public DateTime FoundTime
         {
@@ -26,7 +51,7 @@ namespace Model
         public string Name => signData.Name;
         public string Number => signData.Number;
         public string Description => signData.Description;
-
+        
         public void Save()
         {
             var saveString = JsonUtility.ToJson(this);
@@ -41,6 +66,7 @@ namespace Model
                 var model = JsonUtility.FromJson<SignModel>(loadString);
                 IsFound = model.IsFound;
                 FoundTime = model.FoundTime;
+                isLocked = model.isLocked;
             }
         }
 

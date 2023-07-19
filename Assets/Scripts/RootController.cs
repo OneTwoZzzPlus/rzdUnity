@@ -2,6 +2,7 @@ using Data;
 using Interfaces;
 using Model;
 using UnityEngine;
+using UnityEngine.Serialization;
 using View;
 
 namespace DefaultNamespace
@@ -15,7 +16,7 @@ namespace DefaultNamespace
         [SerializeField] private RealTargetTracker realTargetTracker;
         [SerializeField] private WindowController windowController;
         [SerializeField] private SignDataRegistry signDataRegistry;
-        [SerializeField] private HedgehogView hedgehogView;
+        [FormerlySerializedAs("hedgehogView")] [SerializeField] private ArView arView;
 
         private readonly TargetModel targetModel = new();
 
@@ -55,7 +56,7 @@ namespace DefaultNamespace
 
             viewStateMachine = new ViewStateMachine();
             viewStateMachine.Initialize(new IState<ViewState>[] {
-                    new ARState(webCam, TargetTracker, signInventory, windowController, targetModel, viewStateMachine, hedgehogView),
+                    new ARState(webCam, TargetTracker, signInventory, windowController, targetModel, viewStateMachine, arView),
                     new LibraryState(signInventory,windowController, targetModel, viewStateMachine),
                     new InfoState(signInventory,windowController, targetModel, viewStateMachine) 
             }, ViewState.AR);

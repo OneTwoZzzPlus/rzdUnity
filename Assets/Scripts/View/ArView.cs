@@ -4,14 +4,13 @@ using UnityEngine;
 
 namespace View
 {
-    public class HedgehogView : MonoBehaviour
+    public class ArView : MonoBehaviour
     {
-        [SerializeField] private GameObject arObjectPrefab;
         [SerializeField] private Transform trackableAnchor;
         
         private GameObject arObject;
 
-        public void Show()
+        public void Show(GameObject arObjectPrefab)
         {
             if (arObjectPrefab)
                 arObject = Instantiate(arObjectPrefab, trackableAnchor);

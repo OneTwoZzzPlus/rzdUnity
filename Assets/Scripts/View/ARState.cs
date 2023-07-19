@@ -1,6 +1,7 @@
 using DefaultNamespace;
 using Interfaces;
 using System;
+using System.Linq;
 using UnityEngine.Assertions;
 using Model;
 using UnityEngine;
@@ -15,18 +16,16 @@ namespace View
         private readonly IWindowController windowController;
         private readonly TargetModel targetModel;
         private readonly IStateMachine<ViewState> viewStateMachine;
-        private readonly HedgehogView hedgehogView;
+        private readonly ArView arView;
         private ARWindow arWindow;
 
-        private int hedgehogId = 32;
-        
         public ARState(WebCam webCam, 
                        ITargetTracker targetTracker,
                        SignInventory signInventory, 
                        WindowController windowController, 
                        TargetModel targetModel, 
                        ViewStateMachine viewStateMachine,
-                       HedgehogView hedgehogView)
+                       ArView arView)
         {
             this.webCam = webCam;
             this.targetTracker = targetTracker;
@@ -34,7 +33,7 @@ namespace View
             this.windowController = windowController;
             this.targetModel = targetModel;
             this.viewStateMachine = viewStateMachine;
-            this.hedgehogView = hedgehogView;
+            this.arView = arView;
             if (webCam)
             {
                 webCam.OnInitialized += OnWebcamInitialized;
@@ -50,10 +49,17 @@ namespace View
 
         public ViewState Id => ViewState.AR;
 
+        private bool firstRun = true;
+        
         public void Enter()
         {
             arWindow = windowController.ShowWindow(typeof(ARWindow)) as ARWindow;
 
+            if (firstRun) {
+                UpdateModelsLock();
+                firstRun = false;
+            }
+            
             Assert.IsNotNull(arWindow);
 
             arWindow.LibraryButtonClicked += LibraryButtonClickHandler;
@@ -67,9 +73,7 @@ namespace View
 
         private void TargetComputedHandler(int targetId, Matrix4x4 matrix)
         {
-            if (targetId == hedgehogId) {
-                hedgehogView.Move(matrix);
-            }
+            arView.Move(matrix);
         }
 
         public void Exit()
@@ -106,24 +110,32 @@ namespace View
                 arWindow.SetSignNumber(signModel.Number);
                 arWindow.SetSignName(signModel.Name);
 
-                if (signModel.IsFound) 
-                    return;
-                signModel.IsFound = true;
-                signModel.FoundTime = DateTime.Now;
-                signModel.Save();
-            }
+                if (!signModel.IsFound) {
+                    signModel.IsFound = true;
+                    signModel.FoundTime = DateTime.Now;
+                    signModel.Save();
+                    UpdateModelsLock();
 
-            if (targetId == hedgehogId) {
-                hedgehogView.Show();
+                }
+                if(!signModel.IsLocked)
+                    arView.Show(signModel.ArObject);
+                    
+            }
+        }
+
+        private void UpdateModelsLock()
+        {
+            var foundIds = signInventory.GetAll().Where(m => m.IsFound).Select(m => m.Id).ToList();
+            
+            foreach (var model in signInventory.GetAll()) {
+                model.UpdateLockedStatus(foundIds);
             }
         }
 
         private void TargetLostHandler(int targetId)
         {
             arWindow.HideSignButton();
-            if (targetId == hedgehogId) {
-                hedgehogView.Hide();
-            }
+            arView.Hide();
         }
     }
 }
