@@ -39,5 +39,8 @@ namespace View
             foundText.text = $"Обнаружен {time.Date.ToShortDateString()}";
         }
 
+        public bool Interactable { get => button.interactable; 
+            set => button.interactable = value; } 
+        
     }
 }
