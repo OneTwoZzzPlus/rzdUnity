@@ -24,7 +24,8 @@ namespace View
 
         public void SetSprite(Sprite sprite)
         {
-            signImage.sprite = sprite;
+            if (signImage.sprite != sprite)
+                signImage.sprite = sprite;
         }
 
         public void SetText(string text)

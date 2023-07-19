@@ -12,23 +12,15 @@ namespace DefaultNamespace
         private WebCamTexture webCamTexture;
         private IEnumerator initCoroutine;
 
-        private int requestedWidth = 480;
-        private int requestedHeight = 640;
-        [SerializeField] private int requestedFPS = 30;
+        // Cache devices
+        private WebCamDevice[] devices;
         
         private bool staticCameraIndex = false;
         [SerializeField] private int cameraIndex = 0;
-        private int maxCameraIndex = 0;
 
         private void Awake()
         {
             OnInitialized += OnWebCamTextureToMatHelperInitialized;
-        }
-
-        private void Start()
-        {
-            requestedHeight = Display.displays[0].systemHeight;
-            requestedWidth = Display.displays[0].systemWidth;
         }
 
         private void OnWebCamTextureToMatHelperInitialized()
@@ -71,14 +63,11 @@ namespace DefaultNamespace
             if (webCamTexture)
                 webCamTexture.Stop();
 
-            cameraIndex = cameraIndex >= maxCameraIndex ? 0 : cameraIndex + 1;
+            cameraIndex = cameraIndex >= devices.Length-1 ? 0 : cameraIndex + 1;
             staticCameraIndex = true;
-            Debug.Log($"Switch camera to {cameraIndex}");
-            
+
             Initiate();
         }
-
-
 
         public void Initiate()
         {
@@ -100,12 +89,17 @@ namespace DefaultNamespace
                 yield break;
             }
 
-            var devices = WebCamTexture.devices;
-            maxCameraIndex = devices.Length - 1;
+            if (devices is null)
+                devices = WebCamTexture.devices;
+
+            if (devices.Length == 0)
+                Debug.LogError("Missing cameras");
+
             var deviceName = string.Empty;
 
             if (staticCameraIndex)
             {
+                Debug.Log($"Switch camera to {cameraIndex}");
                 deviceName = devices[cameraIndex].name;
             }
             else
@@ -117,25 +111,51 @@ namespace DefaultNamespace
                     var device = devices[camIndex];
 
                     Debug.Log($"Device {camIndex}\nname:{device.name}\nisFrontFacing: {device.isFrontFacing}" +
-                              $"\nkind {device.kind}\ndepthCameraName {device.depthCameraName}");
+                              $"\nkind: {device.kind}\ndepthCameraName: {device.depthCameraName}");
 
                     if (device.isFrontFacing)
                         continue;
+                    Debug.Log($"Found camera {cameraIndex} in FOR");
                     deviceName = device.name;
                     cameraIndex = camIndex;
                     break;
                 }
+                if (string.IsNullOrEmpty(deviceName))
+                {
+                    var wideCam = devices.FirstOrDefault(d => d.name.Contains("адняя"));
+                    if (!string.IsNullOrEmpty(wideCam.name))
+                    {
+                        cameraIndex = devices.ToList().IndexOf(wideCam);
+                        deviceName = wideCam.name;
+                        Debug.Log($"Found camera {cameraIndex} in RUS-BACK");
+                    }
+
+                    if (string.IsNullOrEmpty(wideCam.name)) { 
+                        wideCam = devices.FirstOrDefault(d => d.name.Contains("ack"));
+                        if (!string.IsNullOrEmpty(wideCam.name))
+                        {
+                            cameraIndex = devices.ToList().IndexOf(wideCam);
+                            deviceName = wideCam.name;
+                            Debug.Log($"Found camera {cameraIndex} in ENG-BACK");
+                        }
+                    }
+                        
+                    if (string.IsNullOrEmpty(wideCam.name))
+                    {
+                        cameraIndex = devices.Length > 1 ? 1 : 0;
+                        deviceName = devices[cameraIndex].name;
+                        Debug.Log($"Found camera {cameraIndex} in LAST");
+                    }
+                }
             }
 
-            if (string.IsNullOrEmpty(deviceName)) {
-                var wideCam = devices.FirstOrDefault(d => d.name.Contains("Задняя двойная широкоугольная камера"));
-                if (string.IsNullOrEmpty(wideCam.name))
-                    deviceName = devices[devices.Length > 1 ? 1 : 0].name;
-                else
-                    deviceName = wideCam.name;
-                cameraIndex = devices.ToList().IndexOf(wideCam);
-            }
             
+            if (string.IsNullOrEmpty(deviceName))
+            {
+                Debug.LogWarning("Device not founded");
+                deviceName = devices[cameraIndex].name;
+                cameraIndex = 0;
+            }
             yield return StartCamera(deviceName);
         }
             
