@@ -56,10 +56,15 @@ public class LibraryWindow : BaseWindow
         }
     }
 
-    public void SetSignFound(int id, bool isFound, DateTime time)
+    public void SetSignFound(int id, int unlockCount, bool isFound, DateTime time)
     {
-        if (isFound && signViews.TryGetValue(id, out var view))
-            view.SetFound(time);
+        if (signViews.TryGetValue(id, out var view))
+        {
+            if (isFound)
+                view.SetFound(time);
+            else
+                view.SetUnlockProgress(unlockCount);
+        }
     }
 
     public void UpdateSign(int id, Sprite sprite, bool isLocked)

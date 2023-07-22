@@ -40,6 +40,21 @@ namespace View
             foundText.text = $"Обнаружен {time.Date.ToShortDateString()}";
         }
 
+        public void SetUnlockProgress(int count)
+        {
+            if (count <= 0)
+            {
+                isFound = false;
+                foundFrame.SetActive(false);
+            }
+            else
+            {
+                isFound = true;
+                foundFrame.SetActive(true);
+                foundText.text = $"Осталось {count} знаков";
+            }
+        }
+
         public bool Interactable { get => button.interactable; 
             set => button.interactable = value; } 
         

@@ -36,7 +36,7 @@ namespace View
             foreach (var signModel in signInventory.GetAll())
             { 
                 libraryWindow.UpdateSign(signModel.Id, signModel.Sprite, signModel.IsLocked);
-                libraryWindow.SetSignFound(signModel.Id, signModel.IsFound, signModel.FoundTime);
+                libraryWindow.SetSignFound(signModel.Id, signModel.UnlockProgress, signModel.IsFound, signModel.FoundTime);
             }
         }
 

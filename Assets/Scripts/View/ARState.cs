@@ -77,7 +77,8 @@ namespace View
         }
 
         public void Exit()
-        { 
+        {
+            arView.Hide();
             targetTracker.TargetDetected -= TargetDetectedHandler;
             targetTracker.TargetLost -= TargetLostHandler;
             targetTracker.TargetComputed -= TargetComputedHandler;
@@ -86,16 +87,19 @@ namespace View
 
         private void SignButtonClickHandler()
         {
+            arView.Hide();
             viewStateMachine.ChangeState(ViewState.Info);
         }
 
         private void LibraryButtonClickHandler()
         {
+            arView.Hide();
             viewStateMachine.ChangeState(ViewState.Library);
         }
 
         private void CamSwitchButtonClickHandler()
         {
+            arView.Hide();
             arWindow.SetActiveCamSwitchButton(false);
             webCam.switchCamera();
         }
@@ -118,7 +122,8 @@ namespace View
 
                 }
 
-                arView.Show(signModel.ArObject);
+                if (signModel.ArObject != null)
+                    arView.Show(signModel.ArObject);
                     
             }
         }
@@ -134,8 +139,8 @@ namespace View
 
         private void TargetLostHandler(int targetId)
         {
-            arWindow.HideSignButton();
             arView.Hide();
+            arWindow.HideSignButton();
         }
     }
 }

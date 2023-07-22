@@ -26,5 +26,21 @@ namespace Data
             
             return !unlockIds.All(i => foundIds.Contains(i));
         }
+
+        public int GetUnlockProgress(IEnumerable<int> foundIds)
+        {
+            if (SignsForUnlock.Count == 0)
+                return 0;
+            var unlockIds = SignsForUnlock.Select(s => s.Id);
+
+            int counter = 0;
+            foreach (var i in unlockIds)
+            {
+                if (foundIds.Contains(i))
+                    counter++;
+            }
+
+            return SignsForUnlock.Count - counter;
+        }
     }
 }

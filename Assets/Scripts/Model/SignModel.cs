@@ -25,14 +25,22 @@ namespace Model
 
         [SerializeField]
         private bool isLocked;
-        
+        [SerializeField]
+        private int unlockProgress;
+
         public bool IsLocked {
             get => isLocked;
+        }
+
+        public int UnlockProgress
+        {
+            get => unlockProgress;
         }
 
         public void UpdateLockedStatus(IEnumerable<int> foundIds)
         {
             isLocked = signData.GetLocked(foundIds);
+            unlockProgress = signData.GetUnlockProgress(foundIds);
         }
         
         public GameObject ArObject => signData.ArObject;
